@@ -1,0 +1,25 @@
+{
+  "name": "car-rental",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/pratiksingh8591-dot/car-rental-system#readme",
+  "bugs": {
+    "url": "https://github.com/pratiksingh8591-dot/car-rental-system/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pratiksingh8591-dot/car-rental-system.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "car.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node car.js"
+  },
+  "dependencies": {
+    "ejs": "^5.0.1",
+    "express": "^5.2.1"
+  }
+}
