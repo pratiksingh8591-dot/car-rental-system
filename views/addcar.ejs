@@ -3,23 +3,32 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/output.css">
 	<title>Add Car</title>
 </head>
-<body>
-	<h1>Add Car</h1>
+<body class="min-h-screen bg-slate-100 text-slate-800">
+	<main class="mx-auto max-w-xl px-4 py-10">
+		<section class="rounded-2xl bg-white p-6 shadow">
+			<h1 class="text-2xl font-bold">Add Car</h1>
+			<p class="mt-1 text-sm text-slate-600">Enter your car details below.</p>
 
-	<form action="/host/car-book" method="POST">
-		<div>
-			<label for="car-name">Car Name</label>
-			<input type="text" id="car-name" name="carName" required>
-		</div>
+			<form action="/host/car-book" method="POST" class="mt-6 space-y-4">
+				<div>
+					<label for="car-name" class="mb-1 block text-sm font-medium">Car Name</label>
+					<input type="text" id="car-name" name="carName" required class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+				</div>
 
-		<div>
-			<label for="car-no">Car No</label>
-			<input type="text" id="car-no" name="carNo" required>
-		</div>
+				<div>
+					<label for="car-no" class="mb-1 block text-sm font-medium">Car No</label>
+					<input type="text" id="car-no" name="carNo" required class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+				</div>
 
-		<button type="submit">Submit</button>
-	</form>
+				<div class="flex items-center gap-3 pt-1">
+					<button type="submit" class="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700">Submit</button>
+					<a href="/" class="text-sm font-medium text-blue-600 hover:text-blue-700">Back to Home</a>
+				</div>
+			</form>
+		</section>
+	</main>
 </body>
 </html>

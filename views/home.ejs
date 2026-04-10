@@ -3,10 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/output.css">
 	<title>Car Rental Home</title>
 </head>
-<body>
-	<h1>Welcome to Car Rental</h1>
-	<a href="/host/car-book">Add Car</a>
+<body class="min-h-screen bg-slate-100 text-slate-800">
+	<main class="mx-auto max-w-3xl px-4 py-10 space-y-6">
+		<section class="rounded-2xl bg-white p-6 shadow">
+			<h1 class="text-3xl font-bold tracking-tight">Welcome to Car Rental</h1>
+			<p class="mt-2 text-slate-600">Manage your cars and bookings in one place.</p>
+			<a href="/host/car-book" class="mt-5 inline-block rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700">Add Car</a>
+		</section>
+
+		<section class="rounded-2xl bg-white p-6 shadow">
+			<h2 class="text-xl font-semibold">Registered Cars</h2>
+			<ul class="mt-4 space-y-2">
+				<% if (getcar.length === 0) { %>
+					<li class="rounded-md border border-dashed border-slate-300 p-3 text-slate-500">No cars added yet.</li>
+				<% } else { %>
+					<% getcar.forEach((car) => { %>
+						<li class="rounded-md border border-slate-200 bg-slate-50 p-3">
+							<span class="font-semibold"><%= car.name %></span>
+							<span class="mx-1 text-slate-400">-</span>
+							<span class="text-slate-700"><%= car.cno %></span>
+						</li>
+					<% }) %>
+				<% } %>
+			</ul>
+		</section>
+	</main>
 </body>
 </html>

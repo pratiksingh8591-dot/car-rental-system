@@ -16,10 +16,17 @@
   "main": "car.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node car.js"
+    "start": "node car.js",
+    "tailwind": "tailwindcss -i ./views/input.css -o ./public/output.css --watch",
+    "tailwind:build": "tailwindcss -i ./views/input.css -o ./public/output.css"
   },
   "dependencies": {
     "ejs": "^5.0.1",
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.9",
+    "tailwindcss": "^3.4.19"
   }
 }
