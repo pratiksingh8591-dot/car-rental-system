@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/output.css">
+    <title>Car Added</title>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-800">
+    <%- include('partials/navbar') %>
+    <main class="mx-auto grid min-h-screen w-full max-w-3xl place-items-center px-4 py-10">
+        <section class="w-full max-w-xl rounded-2xl bg-white p-7 text-center shadow">
+            <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">Your Car Was Added Successfully</h1>
+            <p class="mt-2 text-slate-600">Great. You can return to home or add another car right away.</p>
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                <a class="rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50" href="/">Go To Home</a>
+                <a class="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700" href="/host/car-book">Add One More Car</a>
+            </div>
+        </section>
+        <p class="mt-4 text-sm text-slate-500">Tip: Add multiple cars and manage them from your home list.</p>
+    </main>
+</body>
+</html>
