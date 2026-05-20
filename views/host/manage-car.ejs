@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/output.css">
+	<title>Manage Cars</title>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-800">
+	<%- include('../partials/navbar') %>
+	<main class="mx-auto max-w-5xl px-4 py-10">
+		<section class="rounded-2xl bg-white p-6 shadow">
+			<h1 class="text-2xl font-bold">Manage Cars</h1>
+			<p class="mt-1 text-sm text-slate-600">Review, edit, or remove cars from your fleet.</p>
+			<div class="mt-6 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+				Add table/cards here for car status, price, and availability.
+			</div>
+			<div class="mt-4 flex flex-wrap gap-3">
+				<a href="/" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50">Back to Home</a>
+				<a href="/host/car-book" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">+ Add Car</a>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

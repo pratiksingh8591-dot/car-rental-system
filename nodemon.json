@@ -1,0 +1,7 @@
+{
+    "watch":["."] ,
+    "ext":"ejs,json,js",
+    "ignore":["node_modules/","data/"],
+    "exec":"node car.js"
+
+}

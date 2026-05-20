@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/output.css">
+	<title>Admin Panel</title>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-800">
+	<%- include('../partials/navbar') %>
+	<main class="mx-auto max-w-5xl px-4 py-10">
+		<section class="rounded-2xl bg-white p-6 shadow">
+			<h1 class="text-2xl font-bold">Admin Panel</h1>
+			<p class="mt-1 text-sm text-slate-600">Track overall bookings and car status at a glance.</p>
+			<div class="mt-6 overflow-x-auto">
+  <table class="min-w-full border-separate border-spacing-x-6 text-left text-sm">
+    <thead class="border-b border-slate-200 text-slate-500">
+      <tr>
+        <th class="py-2 pr-4">Car Name</th>
+        <th class="py-2 pr-4">Car No</th>
+        <th class="py-2 pr-4">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (!cars || cars.length === 0) { %>
+        <tr>
+          <td colspan="3" class="py-4 text-slate-500">No cars found.</td>
+        </tr>
+      <% } else { %>
+        <% cars.forEach((car) => { %>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 pr-4"><%= car.name %></td>
+            <td class="py-2 pr-4"><%= car.cno %></td>
+            <td class="py-2 pr-4">Available</td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+		</section>
+	</main>
+</body>
+</html>

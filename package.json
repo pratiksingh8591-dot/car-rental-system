@@ -16,7 +16,8 @@
   "main": "car.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node car.js",
+    "start": "nodemon car.js & npm  run tailwind",
+    "dev": "nodemon --ext js,ejs,json car.js",
     "tailwind": "tailwindcss -i ./views/input.css -o ./public/output.css --watch",
     "tailwind:build": "tailwindcss -i ./views/input.css -o ./public/output.css"
   },
