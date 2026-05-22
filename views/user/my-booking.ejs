@@ -4,7 +4,107 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/output.css">
-	<title>My Booking</title>
+	<title>Car Rental Home</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');
+
+		body { font-family: 'DM Sans', sans-serif; }
+		h1, h2 { font-family: 'Syne', sans-serif; }
+
+		.car-scroll {
+			display: flex;
+			gap: 1.25rem;
+			overflow-x: auto;
+			padding-bottom: 1rem;
+			scroll-snap-type: x mandatory;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		.car-scroll::-webkit-scrollbar {
+			height: 6px;
+		}
+		.car-scroll::-webkit-scrollbar-track {
+			background: #e2e8f0;
+			border-radius: 99px;
+		}
+		.car-scroll::-webkit-scrollbar-thumb {
+			background: #94a3b8;
+			border-radius: 99px;
+		}
+
+		.car-card {
+			flex: 0 0 260px;
+			scroll-snap-align: start;
+			background: #fff;
+			border-radius: 1.25rem;
+			overflow: hidden;
+			box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+			transition: transform 0.25s ease, box-shadow 0.25s ease;
+		}
+		.car-card:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+		}
+
+		.car-card img {
+			width: 100%;
+			height: 160px;
+			object-fit: cover;
+			display: block;
+		}
+
+		.car-card-placeholder {
+			width: 100%;
+			height: 160px;
+			background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.car-card-body {
+			padding: 1rem 1.1rem 1.2rem;
+		}
+
+		.car-badge {
+			display: inline-block;
+			background: #eff6ff;
+			color: #2563eb;
+			font-size: 0.72rem;
+			font-weight: 600;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+			padding: 3px 10px;
+			border-radius: 99px;
+			margin-bottom: 0.5rem;
+		}
+
+		.car-name {
+			font-family: 'Syne', sans-serif;
+			font-size: 1.05rem;
+			font-weight: 700;
+			color: #0f172a;
+			line-height: 1.3;
+		}
+
+		.car-number {
+			margin-top: 0.25rem;
+			font-size: 0.875rem;
+			color: #64748b;
+			font-weight: 500;
+			letter-spacing: 0.04em;
+		}
+
+		.empty-state {
+			flex: 0 0 100%;
+			border: 2px dashed #cbd5e1;
+			border-radius: 1.25rem;
+			padding: 2.5rem;
+			text-align: center;
+			color: #94a3b8;
+			font-size: 0.95rem;
+		}
+	</style>
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-800">
 	<%- include('../partials/navbar') %>
@@ -12,9 +112,47 @@
 		<section class="rounded-2xl bg-white p-6 shadow">
 			<h1 class="text-2xl font-bold">My Booking</h1>
 			<p class="mt-1 text-sm text-slate-600">View your current and past bookings.</p>
-			<div class="mt-6 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
-				Add booking cards or a list view here.
+			<div class="car-scroll mt-4">
+				<% if (bookings && bookings.length === 0) { %>
+					<div class="empty-state">No bookings yet.</div>
+				<% } else { %>
+					<% bookings.forEach((booking) => { %>
+						<% const car = booking.car || {}; %>
+						<div class="car-card">
+							<% if (car.photoUrl) { %>
+								<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
+							<% } else { %>
+								<div class="car-card-placeholder">
+									<svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8l2 5H6l2-5zM3 12h18v5a1 1 0 01-1 1H4a1 1 0 01-1-1v-5zm4 5v1m10-1v1" />
+									</svg>
+								</div>
+							<% } %>
+							<div class="car-card-body">
+								<span class="car-badge">Car</span>
+								<div class="car-name"><%= car.name %></div>
+								<div class="car-number"><%= car.cno %></div>
+								<div class="car-number"><%= car.carRate %></div>
+								<div class="car-number">
+									<% const bookedAt = booking.bookedAt || booking.bookedat; %>
+									Booked: <%= bookedAt ? new Date(bookedAt)
+										.toLocaleString("en-GB", {
+											day: "2-digit",
+											month: "short",
+											year: "numeric",
+											hour: "2-digit",
+											minute: "2-digit",
+											hour12: true,
+										})
+										.replace("am", "AM")
+										.replace("pm", "PM") : "" %>
+								</div>
+							</div>
+						</div>
+					<% }) %>
+				<% } %>
 			</div>
+			
 		</section>
 	</main>
 </body>

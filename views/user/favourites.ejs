@@ -5,6 +5,46 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/output.css">
 	<title>Favourites</title>
+	<style>
+		.card-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+			gap: 1.25rem;
+			margin-top: 1.5rem;
+		}
+		.fav-card {
+			background: #fff;
+			border-radius: 1.25rem;
+			overflow: hidden;
+			box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+		}
+		.fav-card img {
+			width: 100%;
+			height: 140px;
+			object-fit: cover;
+			display: block;
+		}
+		.fav-card-body {
+			padding: 0.9rem 1rem 1.1rem;
+		}
+		.fav-name {
+			font-weight: 700;
+			color: #0f172a;
+		}
+		.fav-meta {
+			margin-top: 0.25rem;
+			font-size: 0.85rem;
+			color: #64748b;
+		}
+		.empty-state {
+			border: 2px dashed #cbd5e1;
+			border-radius: 1.25rem;
+			padding: 2.5rem;
+			text-align: center;
+			color: #94a3b8;
+			font-size: 0.95rem;
+		}
+	</style>
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-800">
 	<%- include('../partials/navbar') %>
@@ -12,9 +52,26 @@
 		<section class="rounded-2xl bg-white p-6 shadow">
 			<h1 class="text-2xl font-bold">Favourites</h1>
 			<p class="mt-1 text-sm text-slate-600">Save cars you like and return to them anytime.</p>
-			<div class="mt-6 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
-				Add favourite car cards here.
-			</div>
+			<% if (!favourites || favourites.length === 0) { %>
+				<div class="mt-6 empty-state">No favourites yet. Tap the heart icon on a car to save it.</div>
+			<% } else { %>
+				<div class="card-grid">
+					<% favourites.forEach((car) => { %>
+						<div class="fav-card">
+							<% if (car.photoUrl) { %>
+								<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
+							<% } else { %>
+								<div class="bg-slate-100 h-[140px]"></div>
+							<% } %>
+							<div class="fav-card-body">
+								<div class="fav-name"><%= car.name %></div>
+								<div class="fav-meta"><%= car.cno %></div>
+								<div class="fav-meta"><%= car.carRate %>/hr</div>
+							</div>
+						</div>
+					<% }) %>
+				</div>
+			<% } %>
 		</section>
 	</main>
 </body>

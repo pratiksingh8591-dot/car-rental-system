@@ -1,7 +1,8 @@
 const Car = require("../models/cardata");
 const http = require("http");
 const https = require("https");
-
+const Booking = require("../models/booking");
+const favourites = require("../models/favourites");
 const lcar = [];
 
 const isImageUrl = (value) => /\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i.test(value);
@@ -82,13 +83,48 @@ const getAdminPanel = (req, res) => {
 };
 
 const getMyBooking = (req, res) => {
-   res.render("user/my-booking");
+   Booking.fetchAll((bookings) => {
+      res.render("user/my-booking", { content: "HERE ARE YOUR BOOKED CARS",bookings });
+   });
 };
 
+const bookcar=(req,res)=>{
+    const { carName, carNo, carPhoto, carRate } = req.body;
+   const booking = new Booking({
+      name: carName,
+      cno: carNo,
+      photoUrl: carPhoto,
+      carRate: carRate,
+   });
+   booking.save();
+   res.redirect("/my-booking");
+};
 const getFavourites = (req, res) => {
-   res.render("user/favourites");
+   favourites.fetchAll((favourite)=>{
+      res.render("user/favourites", { content: "GET YOUR FAVOURITE CAR BOOKED ASAP", favourites: favourite });
+   })
 };
 
+const addFavourite = (req, res) => {
+   const { carName, carNo, carPhoto, carRate } = req.body;
+   const favourite = new favourites({
+      name: carName,
+      cno: carNo,
+      photoUrl: carPhoto,
+      carRate: carRate,
+   });
+   favourite.save();
+   res.status(201).json({ ok: true });
+};
+
+const getCarAdded = (req, res) => {
+   res.render("host/caradded");
+};
+const potbookcar=(req,res,next)=>{
+   const { carName, carNo, carPhoto,carRate} = req.body;
+   
+   }
+   
 module.exports = {
    getaddcar,
    postcar,
@@ -96,5 +132,8 @@ module.exports = {
    getManageCar,
    getAdminPanel,
    getMyBooking,
+   bookcar,
    getFavourites,
+   addFavourite,
+   getCarAdded,
 };

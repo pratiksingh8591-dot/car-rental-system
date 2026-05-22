@@ -8,6 +8,7 @@ const viewsPath = path.resolve(__dirname, 'views');
 app.set('views', viewsPath);
 console.log('Views directory:', viewsPath);
 app.use(express.urlencoded({extended:false}));
+app.use(express.json());
 app.use(express.static(path.join(__dirname,'public')));
 app.use((req,res,next)=>{
     console.log(req.method,req.url,req.body);
