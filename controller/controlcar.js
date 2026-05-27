@@ -2,7 +2,6 @@ const Car = require("../models/cardata");
 const http = require("http");
 const https = require("https");
 const Booking = require("../models/booking");
-const favourites = require("../models/favourites");
 const lcar = [];
 
 const isImageUrl = (value) => /\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i.test(value);
@@ -46,8 +45,9 @@ const getaddcar = (req, res, next) => {
 };
 
 const postcar = async (req, res, next) => {
-   const { carName, carNo, carPhoto,carRate} = req.body;
+   const { carName, carNo, carPhoto, carRate, carDescription } = req.body;
    let photoUrl = (carPhoto || "").trim();
+   const description = (carDescription || "").trim();
 
    if (photoUrl && !isImageUrl(photoUrl)) {
       try {
@@ -61,7 +61,7 @@ const postcar = async (req, res, next) => {
       }
    }
 
-   const newCar = new Car(carName, carNo, photoUrl,carRate);
+   const newCar = new Car(carName, carNo, photoUrl, carRate, description);
    newCar.save();
 
    res.render("host/caradded", { content: "thank you for adding" });
@@ -99,23 +99,6 @@ const bookcar=(req,res)=>{
    booking.save();
    res.redirect("/my-booking");
 };
-const getFavourites = (req, res) => {
-   favourites.fetchAll((favourite)=>{
-      res.render("user/favourites", { content: "GET YOUR FAVOURITE CAR BOOKED ASAP", favourites: favourite });
-   })
-};
-
-const addFavourite = (req, res) => {
-   const { carName, carNo, carPhoto, carRate } = req.body;
-   const favourite = new favourites({
-      name: carName,
-      cno: carNo,
-      photoUrl: carPhoto,
-      carRate: carRate,
-   });
-   favourite.save();
-   res.status(201).json({ ok: true });
-};
 
 const getCarAdded = (req, res) => {
    res.render("host/caradded");
@@ -123,6 +106,23 @@ const getCarAdded = (req, res) => {
 const potbookcar=(req,res,next)=>{
    const { carName, carNo, carPhoto,carRate} = req.body;
    
+   }
+   const getcardetails=(req,res)=>{
+      const carID=req.params.carID;
+      Car.FindBy(carID,car=>{
+         if(!car){
+            console.log("error");
+            Car.fetchAll(lcar=>{            
+               res.render("user/home", { lcar: lcar });})
+
+         }
+         else{
+           console.log("car details",car);
+           res.render("user/details",{content : "get detailed  overview of ur car", car});
+         }
+        
+      })
+      
    }
    
 module.exports = {
@@ -133,7 +133,6 @@ module.exports = {
    getAdminPanel,
    getMyBooking,
    bookcar,
-   getFavourites,
-   addFavourite,
+   getcardetails,
    getCarAdded,
 };

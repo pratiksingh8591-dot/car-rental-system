@@ -30,7 +30,13 @@
 
 				<div>
 					<label for="car-photo" class="mb-1 block text-sm font-medium">Car Photo URL or Page URL</label>
-					<input type="url" id="car-photo" name="carPhoto" placeholder="https://" class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+					<input type="url" id="car-photo" name="carPhoto" placeholder="https:// or /images/car-1.svg" class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+					<p class="mt-1 text-xs text-slate-500">You can use local images like /images/car-1.svg</p>
+				</div>
+
+				<div>
+					<label for="car-description" class="mb-1 block text-sm font-medium">Car Description</label>
+					<textarea id="car-description" name="carDescription" rows="4" required class="w-full resize-none rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="Add highlights, features, or condition"></textarea>
 				</div>
 
 				<div class="flex items-center gap-3 pt-1">

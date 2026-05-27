@@ -54,41 +54,6 @@
 			display: block;
 		}
 
-		.fav-btn {
-			position: absolute;
-			top: 0.75rem;
-			right: 0.75rem;
-			width: 36px;
-			height: 36px;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: 999px;
-			background: rgba(255, 255, 255, 0.95);
-			border: 1px solid #e2e8f0;
-			box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
-			transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-		}
-		.fav-btn:hover {
-			transform: scale(1.05);
-			box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
-		}
-		.fav-btn svg {
-			width: 18px;
-			height: 18px;
-			fill: none;
-			stroke: #64748b;
-			stroke-width: 2;
-			transition: fill 0.2s ease, stroke 0.2s ease;
-		}
-		.fav-btn.is-active {
-			border-color: #fecaca;
-		}
-		.fav-btn.is-active svg {
-			fill: #ef4444;
-			stroke: #ef4444;
-		}
-
 		.car-card-placeholder {
 			width: 100%;
 			height: 160px;
@@ -131,6 +96,16 @@
 			letter-spacing: 0.04em;
 		}
 
+		.car-desc {
+			margin-top: 0.5rem;
+			font-size: 0.85rem;
+			color: #475569;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+		}
+
 		.empty-state {
 			flex: 0 0 100%;
 			border: 2px dashed #cbd5e1;
@@ -152,7 +127,6 @@
 			<p class="mt-2 text-slate-600">Manage your cars and bookings in one place.</p>
 			<div class="mt-5 flex flex-wrap gap-3">
 				<a href="/my-booking" class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">My Booking</a>
-				<a href="/favourites" class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">Favourites</a>
 			</div>
 		</section>
 
@@ -171,20 +145,6 @@
 				<% } else { %>
 					<% lcar.forEach((car) => { %>
 						<div class="car-card">
-							<button
-								type="button"
-								class="fav-btn"
-								aria-label="Add to favourites"
-								aria-pressed="false"
-								data-name="<%= car.name %>"
-								data-no="<%= car.cno %>"
-								data-photo="<%= car.photoUrl %>"
-								data-rate="<%= car.carRate %>"
-							>
-								<svg viewBox="0 0 24 24" aria-hidden="true">
-									<path d="M12 21s-6.7-4.1-9.2-7.3C.6 11.4.9 7.7 3.5 5.8 5.5 4.4 8.2 5 9.7 6.8L12 9.3l2.3-2.5c1.5-1.8 4.2-2.4 6.2-1 2.6 1.9 2.9 5.6.7 7.9C18.7 16.9 12 21 12 21z" />
-								</svg>
-							</button>
 							<% if (car.photoUrl) { %>
 								<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
 							<% } else { %>
@@ -199,6 +159,8 @@
 								<div class="car-name"><%= car.name %></div>
 								<div class="car-number"><%= car.cno %></div>
 								<div class="car-number"><%= car.carRate %>/hr</div>
+								
+								<a class="mt-4" href="/<%= car.id %>">details</a>
 								<form action="/book" method="POST" class="mt-4">
 									<input type="hidden" name="carName" value="<%= car.name %>">
 									<input type="hidden" name="carNo" value="<%= car.cno %>">
@@ -214,35 +176,5 @@
 		</section>
 
 	</main>
-	<script>
-		document.querySelectorAll(".fav-btn").forEach((btn) => {
-			btn.addEventListener("click", async () => {
-				const isActive = btn.classList.toggle("is-active");
-				btn.setAttribute("aria-pressed", isActive ? "true" : "false");
-				if (!isActive) {
-					return;
-				}
-
-				const payload = {
-					carName: btn.dataset.name,
-					carNo: btn.dataset.no,
-					carPhoto: btn.dataset.photo || "",
-					carRate: btn.dataset.rate,
-				};
-
-				try {
-					await fetch("/favourites", {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify(payload),
-					});
-				} catch (err) {
-					console.error("Failed to save favourite", err);
-				}
-
-				alert(`${payload.carName} is added in favourites`);
-			});
-		});
-	</script>
 </body>
 </html>
