@@ -2,6 +2,7 @@ const Car = require("../models/cardata");
 const http = require("http");
 const https = require("https");
 const Booking = require("../models/booking");
+const favourites = require("../models/favourites");
 const lcar = [];
 
 const isImageUrl = (value) => /\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i.test(value);
@@ -100,6 +101,31 @@ const bookcar=(req,res)=>{
    res.redirect("/my-booking");
 };
 
+const getFavList = (req, res) => {
+    favourites.getfavourites((favIds) => {
+         Car.fetchAll((cars) => {
+             const favList = cars.filter((car) => favIds.includes(car.id));
+             res.render("user/favourites", { content: "YOUR FAVOURITES", favourites: favList });
+         });
+    });
+};
+const postfavourites = (req, res,next) => {
+   
+   favourites.addfavourites(req.body.id ,error=>{
+      if(error){
+         console.log("error ",error);
+      }
+      res.redirect("/favourites");
+   })
+};
+const getfavourites = (req, res) => {
+   favourites.getfavourites((favIds) => {
+      Car.fetchAll((cars) => {
+         const favList = cars.filter((car) => favIds.includes(car.id));
+         res.render("user/favourites", { content: " HERE ARE YOUR FAVOURITES CARS ", favourites: favList });
+      });
+   });
+};
 const getCarAdded = (req, res) => {
    res.render("host/caradded");
 };
@@ -133,6 +159,9 @@ module.exports = {
    getAdminPanel,
    getMyBooking,
    bookcar,
+   getFavList,
+   postfavourites,
    getcardetails,
    getCarAdded,
+   getfavourites,
 };

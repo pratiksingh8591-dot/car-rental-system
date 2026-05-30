@@ -160,7 +160,7 @@
 								<div class="car-number"><%= car.cno %></div>
 								<div class="car-number"><%= car.carRate %>/hr</div>
 								
-								<a class="mt-4" href="/<%= car.id %>">details</a>
+								<a class="mt-4" href="/car/<%= car.id %>">details</a>
 								<form action="/book" method="POST" class="mt-4">
 									<input type="hidden" name="carName" value="<%= car.name %>">
 									<input type="hidden" name="carNo" value="<%= car.cno %>">

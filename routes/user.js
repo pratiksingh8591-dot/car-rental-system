@@ -6,5 +6,7 @@ userRouter.get("/",ctrlcar.getcar)
 userRouter.get("/my-booking",ctrlcar.getMyBooking)
 userRouter.get("/caradded",ctrlcar.getCarAdded)
 userRouter.post("/book", ctrlcar.bookcar);
-userRouter.get("/:carID",ctrlcar.getcardetails);
+userRouter.get("/car/:carID",ctrlcar.getcardetails);
+userRouter.post("/favourites",ctrlcar.postfavourites);
+userRouter.get("/favourites",ctrlcar.getfavourites);
 module.exports=userRouter;
