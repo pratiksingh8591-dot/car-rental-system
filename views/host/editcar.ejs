@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/output.css">
+	<title>Car Details</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');
+
+		:root {
+			color-scheme: light;
+			--ink: #0f172a;
+			--muted: #64748b;
+			--line: #e2e8f0;
+			--card: #ffffff;
+			--wash: #f8fafc;
+			--accent: #2563eb;
+			--accent-deep: #1d4ed8;
+			--accent-soft: #dbeafe;
+		}
+
+		body {
+			font-family: 'DM Sans', sans-serif;
+			background: radial-gradient(70% 60% at 10% 5%, #e0f2fe 0%, transparent 55%),
+				linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+		}
+
+		h1, h2 { font-family: 'Syne', sans-serif; }
+
+		.page-shell {
+			max-width: 1080px;
+			margin: 0 auto;
+			padding: 2.5rem 1rem 3.5rem;
+		}
+
+		.top-bar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+		}
+
+		.back-link {
+			color: var(--accent);
+			font-weight: 600;
+			text-decoration: none;
+		}
+
+		.back-link:hover { color: var(--accent-deep); }
+
+		.detail-card {
+			margin-top: 1.5rem;
+			background: var(--card);
+			border-radius: 1.75rem;
+			border: 1px solid rgba(148, 163, 184, 0.25);
+			box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+			overflow: hidden;
+		}
+
+		.detail-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+			gap: 0;
+		}
+
+		.media {
+			position: relative;
+			background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+			min-height: 280px;
+		}
+
+		.media img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+		.car-card-placeholder {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.info {
+			padding: 2rem 2.2rem 2.2rem;
+			display: flex;
+			flex-direction: column;
+			gap: 1.2rem;
+		}
+
+		.car-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.4rem;
+			background: var(--accent-soft);
+			color: var(--accent-deep);
+			font-size: 0.72rem;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			padding: 4px 12px;
+			border-radius: 999px;
+		}
+
+		.car-name {
+			font-family: 'Syne', sans-serif;
+			font-size: 2rem;
+			font-weight: 800;
+			color: var(--ink);
+			line-height: 1.15;
+		}
+
+		.car-meta {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+			gap: 0.75rem;
+			color: var(--muted);
+			font-weight: 600;
+			letter-spacing: 0.02em;
+		}
+
+		.car-meta span {
+			background: var(--wash);
+			border: 1px solid var(--line);
+			border-radius: 0.9rem;
+			padding: 0.6rem 0.85rem;
+		}
+
+		.car-description {
+			background: var(--wash);
+			border: 1px solid var(--line);
+			border-radius: 1rem;
+			padding: 1rem 1.1rem;
+			color: #475569;
+			line-height: 1.65;
+		}
+
+		.actions {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 0.75rem;
+		}
+
+		.primary-button {
+			background: linear-gradient(135deg, var(--accent), #60a5fa);
+			border: none;
+			color: #fff;
+			box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.primary-button:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 18px 28px rgba(37, 99, 235, 0.32);
+		}
+
+		.ghost-button {
+			background: #fff;
+			border: 1px solid #bfdbfe;
+			color: var(--accent-deep);
+			box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+			transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+		}
+
+		.ghost-button:hover {
+			transform: translateY(-1px);
+			border-color: #93c5fd;
+			box-shadow: 0 12px 22px rgba(15, 23, 42, 0.12);
+		}
+	</style>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-800">
+	<%- include('../partials/navbar') %>
+	<main class="page-shell">
+		<section class="top-bar">
+			<a href="/" class="back-link">&larr; Back to cars</a>
+			<span class="text-sm text-slate-500">Car details</span>
+		</section>
+		<section class="detail-card">
+			<div class="detail-grid">
+				<div class="media">
+					<% if (car.photoUrl) { %>
+						<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
+					<% } else { %>
+						<div class="car-card-placeholder">
+							<svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8l2 5H6l2-5zM3 12h18v5a1 1 0 01-1 1H4a1 1 0 01-1-1v-5zm4 5v1m10-1v1" />
+							</svg>
+						</div>
+					<% } %>
+				</div>
+				<div class="info">
+					<span class="car-badge">Car</span>
+					<div class="car-name"><%= car.name %></div>
+					<div class="car-meta">
+						<span>Number: <%= car.cno %></span>
+						<span>Rate: <%= car.carRate %>/hr</span>
+					</div>
+					<div class="car-description"><%= car.description || 'No description provided yet.' %></div>
+					<div class="actions">
+						<form action="/book" method="POST">
+							<input type="hidden" name="carName" value="<%= car.name %>">
+							<input type="hidden" name="carNo" value="<%= car.cno %>">
+							<input type="hidden" name="carPhoto" value="<%= car.photoUrl %>">
+							<input type="hidden" name="carRate" value="<%= car.carRate %>">
+							<button type="submit" class="primary-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition">Book now</button>
+						</form>
+						<form action="/favourites" method="POST">
+							<input type="hidden" name="id" value="<%= car.id %>" />
+							<button type="submit" class="ghost-button inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition">Add to favourites</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

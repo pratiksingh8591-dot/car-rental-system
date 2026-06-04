@@ -74,7 +74,18 @@ const getcar = (req, res, next) => {
    });
 };
 const getManageCar = (req, res) => {
-   res.render("host/manage-car");
+   Car.fetchAll((lcar) => {
+      res.render("host/manage-car", { lcar });
+   });
+};
+const getEditCar = (req, res) => {
+   const carID = req.params.carID;
+   Car.FindBy(carID, (car) => {
+      if (!car) {
+         return res.redirect("/host/manage-car");
+      }
+      res.render("host/editcar", { car });
+   });
 };
 
 const getAdminPanel = (req, res) => {
@@ -163,5 +174,6 @@ module.exports = {
    postfavourites,
    getcardetails,
    getCarAdded,
+   getEditCar,
    getfavourites,
 };
