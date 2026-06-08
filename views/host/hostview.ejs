@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/output.css">
-	<title>Manage Cars</title>
+	<title>Car Rental Home</title>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');
 
@@ -119,20 +119,18 @@
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-800">
 	<%- include('../partials/navbar') %>
-	<main class="mx-auto max-w-5xl px-4 py-10">
-		<section class="rounded-2xl bg-white p-6 shadow">
-			<h1 class="text-2xl font-bold">Manage Cars</h1>
-			<p class="mt-1 text-sm text-slate-600">Review, edit, or remove cars from your fleet.</p>
-			<div class="mt-6 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
-				Add table/cards here for car status, price, and availability.
-			</div>
-			<div class="mt-4 flex flex-wrap gap-3">
+	<main class="mx-auto max-w-6xl px-4 py-10 space-y-8">
 
-				<a href="/host/" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50">Back to Home</a>
-				<a href="/host/addcar" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">+ Add Car</a>
+		<!-- Hero Section -->
+		<section class="rounded-2xl bg-white p-6 shadow">
+			<h1 class="text-3xl font-bold tracking-tight">Welcome to Car Rental</h1>
+			<p class="mt-2 text-slate-600">Manage your cars and bookings in one place.</p>
+			<div class="mt-5 flex flex-wrap gap-3">
+				<a href="/host/manage-car" class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">Manage car</a>
 			</div>
 		</section>
-			<!-- Car List Section -->
+
+		<!-- Car List Section -->
 		<section>
 			<div class="flex items-center justify-between mb-5">
 				<h2 class="text-2xl font-bold text-slate-900">Registered Cars</h2>
@@ -163,10 +161,13 @@
 								<div class="car-number"><%= car.carRate %>/hr</div>
 								
 								<a class="mt-4" href="/car/<%= car.id %>">details</a>
-								<form action="/host/editcar/<%= car.id %>" method="GET" class="mt-4">
+								
+                                	<form action="/host/editcar/<%= car.id %>" method="GET" class="mt-4">
 									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">edit</button>
 								</form>
+
 							</div>
+
 						</div>
 					<% }) %>
 				<% } %>

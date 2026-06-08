@@ -42,7 +42,7 @@ const extractImageFromHtml = (html) => {
 };
 
 const getaddcar = (req, res, next) => {
-   res.render("user/addcar", { content: "ADD CAR AND GET GREAT DEALS" });
+   res.render("host/addcar", { content: "ADD CAR AND GET GREAT DEALS" });
 };
 
 const postcar = async (req, res, next) => {
@@ -73,6 +73,11 @@ const getcar = (req, res, next) => {
       res.render("user/home", { lcar: lcar });
    });
 };
+const gethostview=(req, res, next) => {
+   const lcar = Car.fetchAll((lcar) => {
+      res.render("host/hostview", { lcar: lcar });
+   });
+};
 const getManageCar = (req, res) => {
    Car.fetchAll((lcar) => {
       res.render("host/manage-car", { lcar });
@@ -80,11 +85,17 @@ const getManageCar = (req, res) => {
 };
 const getEditCar = (req, res) => {
    const carID = req.params.carID;
+   const editing = req.query.editing
+      ? req.query.editing.toLowerCase() === "true"
+      : true;
+   console.log(carID, editing);
    Car.FindBy(carID, (car) => {
       if (!car) {
-         return res.redirect("/host/manage-car");
+         return res.redirect("/host/");
       }
-      res.render("host/editcar", { car });
+      res.render("host/editcar",{car});
+      console.log(car)
+      editing:editing;
    });
 };
 
@@ -166,11 +177,13 @@ module.exports = {
    getaddcar,
    postcar,
    getcar,
+   gethostview,
    getManageCar,
    getAdminPanel,
    getMyBooking,
    bookcar,
    getFavList,
+   
    postfavourites,
    getcardetails,
    getCarAdded,
