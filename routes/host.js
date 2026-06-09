@@ -9,4 +9,6 @@ hostRouter.get("/manage-car",ctrlcar.getManageCar)
 hostRouter.get("/admin-panel",ctrlcar.getAdminPanel)
 hostRouter.get("/caradded",ctrlcar.getCarAdded)
 hostRouter.get("/editcar/:carID",ctrlcar.getEditCar)
+hostRouter.post("/bookings/:bookedat/accept", ctrlcar.acceptBooking)
+hostRouter.post("/bookings/:bookedat/delete", ctrlcar.deleteBooking)
 module.exports={hostRouter};

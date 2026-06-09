@@ -33,7 +33,6 @@
 		}
 
 		.car-card {
-			position: relative;
 			flex: 0 0 260px;
 			scroll-snap-align: start;
 			background: #fff;
@@ -96,16 +95,6 @@
 			letter-spacing: 0.04em;
 		}
 
-		.car-desc {
-			margin-top: 0.5rem;
-			font-size: 0.85rem;
-			color: #475569;
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			-webkit-box-orient: vertical;
-			overflow: hidden;
-		}
-
 		.empty-state {
 			flex: 0 0 100%;
 			border: 2px dashed #cbd5e1;
@@ -121,29 +110,29 @@
 	<%- include('../partials/navbar') %>
 	<main class="mx-auto max-w-6xl px-4 py-10 space-y-8">
 
-		<!-- Hero Section -->
 		<section class="rounded-2xl bg-white p-6 shadow">
 			<h1 class="text-3xl font-bold tracking-tight">Welcome to Car Rental</h1>
-			<p class="mt-2 text-slate-600">Manage your cars and bookings in one place.</p>
+			<p class="mt-2 text-slate-600">Review incoming bookings and respond from one place.</p>
 			<div class="mt-5 flex flex-wrap gap-3">
-				<a href="/host/manage-car" class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">Manage car</a>
+				<a href="/my-booking" class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">My Booking</a>
+				<a href="/host/manage-car" class="inline-block rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700">Manage Cars</a>
 			</div>
 		</section>
-
-		<!-- Car List Section -->
-		<section>
-			<div class="flex items-center justify-between mb-5">
-				<h2 class="text-2xl font-bold text-slate-900">Registered Cars</h2>
-				<% if (lcar.length > 0) { %>
-					<!-- <span class="text-sm text-slate-500"><%= lcar.length %> car<%= lcar.length > 1 ? 's' : '' %></span> -->
-				<% } %>
+		<section class="rounded-2xl bg-white p-6 shadow">
+			<div class="flex items-center justify-between gap-4">
+				<div>
+					<h2 class="text-2xl font-bold text-slate-900">Booked Cars</h2>
+					<p class="mt-1 text-sm text-slate-600">Review every booking request and decide whether to accept or remove it.</p>
+				</div>
 			</div>
-
 			<div class="car-scroll mt-4">
-				<% if (lcar.length === 0) { %>
-					<div class="empty-state">No cars added yet.</div>
+				<% if (!bookings || bookings.length === 0) { %>
+					<div class="empty-state">No bookings yet.</div>
 				<% } else { %>
-					<% lcar.forEach((car) => { %>
+					<% bookings.forEach((booking) => { %>
+						<% const car = booking.car || booking; %>
+						<% const bookedAt = booking.bookedat || booking.bookedAt; %>
+						<% const status = booking.status || "pending"; %>
 						<div class="car-card">
 							<% if (car.photoUrl) { %>
 								<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
@@ -155,25 +144,36 @@
 								</div>
 							<% } %>
 							<div class="car-card-body">
-								<span class="car-badge">Car</span>
+								<span class="car-badge"><%= status %></span>
 								<div class="car-name"><%= car.name %></div>
 								<div class="car-number"><%= car.cno %></div>
 								<div class="car-number"><%= car.carRate %>/hr</div>
-								
-								<a class="mt-4" href="/car/<%= car.id %>">details</a>
-								
-                                	<form action="/host/editcar/<%= car.id %>" method="GET" class="mt-4">
-									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">edit</button>
-								</form>
-
+								<div class="car-number">
+									Booked: <%= bookedAt ? new Date(bookedAt)
+										.toLocaleString("en-GB", {
+											day: "2-digit",
+											month: "short",
+											year: "numeric",
+											hour: "2-digit",
+											minute: "2-digit",
+											hour12: true,
+										})
+										.replace("am", "AM")
+										.replace("pm", "PM") : "" %>
+								</div>
+								<div class="mt-4 flex gap-3">
+									<form action="/host/bookings/<%= bookedAt %>/accept" method="POST" class="flex-1">
+										<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">accept</button>
+									</form>
+									<form action="/host/bookings/<%= bookedAt %>/delete" method="POST" class="flex-1">
+									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Delete</button>
+									</form>
 							</div>
-
 						</div>
-					<% }) %>
+						<% }) %>
 				<% } %>
 			</div>
 		</section>
-
 	</main>
 </body>
 </html>

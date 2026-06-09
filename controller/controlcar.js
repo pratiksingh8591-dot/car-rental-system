@@ -74,8 +74,8 @@ const getcar = (req, res, next) => {
    });
 };
 const gethostview=(req, res, next) => {
-   const lcar = Car.fetchAll((lcar) => {
-      res.render("host/hostview", { lcar: lcar });
+   Booking.fetchAll((bookings) => {
+      res.render("host/hostview", { bookings });
    });
 };
 const getManageCar = (req, res) => {
@@ -151,6 +151,19 @@ const getfavourites = (req, res) => {
 const getCarAdded = (req, res) => {
    res.render("host/caradded");
 };
+const acceptBooking = (req, res) => {
+   const { bookedat } = req.params;
+   Booking.acceptByBookedAt(bookedat, () => {
+      res.redirect("/host/");
+   });
+};
+
+const deleteBooking = (req, res) => {
+   const { bookedat } = req.params;
+   Booking.deleteByBookedAt(bookedat, () => {
+      res.redirect("/host/");
+   });
+};
 const potbookcar=(req,res,next)=>{
    const { carName, carNo, carPhoto,carRate} = req.body;
    
@@ -189,4 +202,6 @@ module.exports = {
    getCarAdded,
    getEditCar,
    getfavourites,
+   acceptBooking,
+   deleteBooking,
 };
