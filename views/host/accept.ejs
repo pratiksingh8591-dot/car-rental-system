@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/output.css">
+	<title>Order Confirmed</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@700;800&display=swap');
+
+		body {
+			font-family: 'DM Sans', sans-serif;
+			background:
+				radial-gradient(circle at top, rgba(34, 197, 94, 0.14), transparent 34%),
+				linear-gradient(180deg, #f8fafc 0%, #eefdf3 100%);
+		}
+
+		h1,
+		h2 {
+			font-family: 'Syne', sans-serif;
+		}
+
+		.success-ring {
+			width: 96px;
+			height: 96px;
+			border-radius: 9999px;
+			background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+			display: grid;
+			place-items: center;
+			box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.18), 0 18px 40px rgba(34, 197, 94, 0.18);
+		}
+
+		.success-card {
+			box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+			animation: rise 0.45s ease-out;
+		}
+
+		@keyframes rise {
+			from {
+				opacity: 0;
+				transform: translateY(14px) scale(0.98);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0) scale(1);
+			}
+		}
+	</style>
+</head>
+<body class="min-h-screen text-slate-800">
+	<%- include('../partials/navbar') %>
+	<main class="mx-auto grid min-h-[calc(100vh-72px)] w-full max-w-3xl place-items-center px-4 py-12">
+		<section class="success-card w-full max-w-xl rounded-3xl bg-white p-8 text-center">
+			<div class="mx-auto success-ring">
+				<svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<path d="M20 7L10.5 16.5L4 10" stroke="#16a34a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+					<path d="M12 2.75C6.89 2.75 2.75 6.89 2.75 12S6.89 21.25 12 21.25 21.25 17.11 21.25 12 17.11 2.75 12 2.75Z" stroke="#22c55e" stroke-opacity="0.25" stroke-width="1.5" />
+				</svg>
+			</div>
+
+			<p class="mt-6 inline-flex items-center rounded-full bg-emerald-50 px-4 py-1 text-sm font-semibold text-emerald-700">
+				Order Confirmed
+			</p>
+
+			<h1 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+				Booking Accepted Successfully
+			</h1>
+
+			<p class="mx-auto mt-3 max-w-md text-base leading-7 text-slate-600">
+				The request has been approved and the customer can now see the confirmed booking status.
+			</p>
+
+			<div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+				<a href="/host/" class="rounded-xl border border-slate-300 bg-white px-5 py-3 font-medium text-slate-700 transition hover:bg-slate-50">
+					Back to Host Dashboard
+				</a>
+				<a href="/host/manage-car" class="rounded-xl bg-emerald-600 px-5 py-3 font-medium text-white transition hover:bg-emerald-700">
+					Manage Cars
+				</a>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

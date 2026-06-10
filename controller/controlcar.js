@@ -154,9 +154,12 @@ const getCarAdded = (req, res) => {
 const acceptBooking = (req, res) => {
    const { bookedat } = req.params;
    Booking.acceptByBookedAt(bookedat, () => {
-      res.redirect("/host/");
+      res.redirect("/host/accept");
    });
 };
+const getAcceptView=(req,res)=>{
+   res.render("host/accept")
+}
 
 const deleteBooking = (req, res) => {
    const { bookedat } = req.params;
@@ -196,7 +199,7 @@ module.exports = {
    getMyBooking,
    bookcar,
    getFavList,
-   
+   getAcceptView,
    postfavourites,
    getcardetails,
    getCarAdded,

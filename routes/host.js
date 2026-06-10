@@ -11,4 +11,5 @@ hostRouter.get("/caradded",ctrlcar.getCarAdded)
 hostRouter.get("/editcar/:carID",ctrlcar.getEditCar)
 hostRouter.post("/bookings/:bookedat/accept", ctrlcar.acceptBooking)
 hostRouter.post("/bookings/:bookedat/delete", ctrlcar.deleteBooking)
+hostRouter.get("/accept",ctrlcar.getAcceptView)
 module.exports={hostRouter};
