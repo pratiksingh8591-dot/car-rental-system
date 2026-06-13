@@ -147,6 +147,13 @@
 										.replace("am", "AM")
 										.replace("pm", "PM") : "" %>
 								</div>
+								<div>
+                                   <% if (booking.status !== "accepted") { %>
+									<p class="text-red-600">YOUR BOOKING IS UNDER PROCESS</p>
+									<% } else { %>
+									<p class="text-green-600">YOUR BOOKING IS ACCEPTED</p>
+									<% } %>
+								</div>
 							</div>
 						</div>
 					<% }) %>

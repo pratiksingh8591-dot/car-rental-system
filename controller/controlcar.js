@@ -75,12 +75,12 @@ const getcar = (req, res, next) => {
 };
 const gethostview=(req, res, next) => {
    Booking.fetchAll((bookings) => {
-      res.render("host/hostview", { bookings });
+      res.render("host/hostview", { bookings: bookings.reverse() });
    });
 };
 const getManageCar = (req, res) => {
    Car.fetchAll((lcar) => {
-      res.render("host/manage-car", { lcar });
+      res.render("host/manage-car", { lcar: lcar.reverse() });
    });
 };
 const getEditCar = (req, res) => {
@@ -107,7 +107,7 @@ const getAdminPanel = (req, res) => {
 
 const getMyBooking = (req, res) => {
    Booking.fetchAll((bookings) => {
-      res.render("user/my-booking", { content: "HERE ARE YOUR BOOKED CARS",bookings });
+      res.render("user/my-booking", { content: "HERE ARE YOUR BOOKED CARS", bookings: bookings.reverse() });
    });
 };
 
