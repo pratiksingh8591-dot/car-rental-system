@@ -186,8 +186,18 @@ const potbookcar=(req,res,next)=>{
          }
         
       })
-      
+    
    }
+     const deleteCar=(req,res)=>{
+         const CarID=req.params.CarID;
+         console.log("Deleted id",CarID)
+         Car.Deleteby(CarID,error=>{
+            if(error){
+               console.log("kya chedha bhonnsdi");
+            }
+            res.redirect("/host/manage-car");
+         })
+      }
    
 module.exports = {
    getaddcar,
@@ -202,9 +212,11 @@ module.exports = {
    getAcceptView,
    postfavourites,
    getcardetails,
+   deleteCar,
    getCarAdded,
    getEditCar,
    getfavourites,
    acceptBooking,
    deleteBooking,
+   
 };

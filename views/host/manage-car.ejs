@@ -166,6 +166,9 @@
 								<form action="/host/editcar/<%= car.id %>" method="GET" class="mt-4">
 									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">edit</button>
 								</form>
+								<form action="/host/delete/<%= car.id %>" method="POST" class="mt-4">
+									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">delete</button>
+								</form>
 							</div>
 						</div>
 					<% }) %>
