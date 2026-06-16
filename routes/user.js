@@ -9,4 +9,5 @@ userRouter.post("/book", ctrlcar.bookcar);
 userRouter.get("/car/:carID",ctrlcar.getcardetails);
 userRouter.post("/favourites",ctrlcar.postfavourites);
 userRouter.get("/favourites",ctrlcar.getfavourites);
+userRouter.post("/delete/:carID",ctrlcar.deletefavourites);
 module.exports=userRouter;

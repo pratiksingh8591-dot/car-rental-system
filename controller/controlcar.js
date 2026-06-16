@@ -148,6 +148,16 @@ const getfavourites = (req, res) => {
       });
    });
 };
+const deletefavourites=(req,res) =>{
+  const delfav=req.params.carID;
+         console.log("Deleted id",delfav)
+         favourites.deletefavourites(delfav,error=>{
+            if(error){
+               console.log("kya chedha bhonnsdi");
+            }
+            res.redirect("/favourites");
+         })  
+}
 const getCarAdded = (req, res) => {
    res.render("host/caradded");
 };
@@ -216,6 +226,7 @@ module.exports = {
    getCarAdded,
    getEditCar,
    getfavourites,
+   deletefavourites,
    acceptBooking,
    deleteBooking,
    

@@ -30,4 +30,13 @@ module.exports= class  favourites{
                   }
                 });
      }
+     static deletefavourites(favID,callback){
+       const favouritespath=path.join(rootdir,"data","favourites.json");
+      favourites.getfavourites(cars=>{
+                 const carfound=cars.filter(carID=> carID!== favID);
+                 fs.writeFile(favouritespath,JSON.stringify(carfound),callback);
+
+         
+      })
+     }
 }

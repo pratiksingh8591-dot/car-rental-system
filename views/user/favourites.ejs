@@ -190,6 +190,7 @@
 			<div>
 				<h2 class="page-title">Favourites</h2>
 				<p class="page-subtitle">Your saved cars, ready to book.</p>
+					<a href="/" class="back-link">&larr; Back to cars</a>
 			</div>
 			<% if (favourites.length > 0) { %>
 				<span class="text-sm text-slate-500"><%= favourites.length %> car<%= favourites.length > 1 ? 's' : '' %></span>
@@ -223,6 +224,9 @@
 							<div class="fav-actions">
 								<a class="ghost-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition" href="/car/<%= car.id %>">Details</a>
 							</div>
+						      <form action="/delete/<%= car.id %>" method="POST" class="mt-4">
+									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">delete</button>
+								</form>
 						</div>
 					</article>
 				<% }) %>
