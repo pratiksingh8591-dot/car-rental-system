@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/output.css">
+    <title>Create Account</title>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-white to-slate-200">
+
+<%- include('../partials/navbar') %>
+
+<div class="flex min-h-[calc(100vh-80px)] justify-center px-4 py-12 sm:py-16">
+
+    <div class="w-full max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.12)]">
+
+        <div class="h-1.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-sky-400"></div>
+
+        <div class="px-8 py-10 sm:px-10 sm:py-12">
+
+            <h1 class="text-3xl font-bold tracking-tight text-center text-slate-800 sm:text-4xl">
+                Create Account
+            </h1>
+
+            <p class="text-center text-slate-500 mt-3 mb-10 leading-relaxed">
+                Welcome! Fill your details below.
+            </p>
+
+            <form action="/signup" method="POST" class="space-y-6">
+
+        <%- include('../partials/errors') %>
+                <!-- User Type -->
+
+                <div>
+
+                    <label class="block text-sm font-semibold text-slate-700 mb-3">
+                        Select User Type
+                    </label>
+
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+                        <label
+                            class="cursor-pointer rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-blue-300 hover:bg-blue-50">
+
+                            <div class="flex items-center justify-center gap-2">
+
+                                <input
+                                    type="radio"
+                                    name="usertype"
+                                     value="user"
+                                    <%= oldinput?.usertype === "user" ? "checked" : "" %>
+                                    required
+                                    class="accent-blue-600">
+
+                                <span class="font-medium text-slate-700">
+                                    User
+                                </span>
+
+                            </div>
+
+                        </label>
+
+                        <label
+                            class="cursor-pointer rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-blue-300 hover:bg-blue-50">
+
+                            <div class="flex items-center justify-center gap-2">
+
+                                <input
+                                    type="radio"
+                                    name="usertype"
+                                    value="host"
+                                                                            <%= oldinput?.usertype === "host" ? "checked" : "" %>
+                                    required
+                                    class="accent-blue-600">
+
+                                <span class="font-medium text-slate-700">
+                                    Host
+                                </span>
+
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+                <!-- First Name -->
+
+                <input
+                    type="text"
+                    name="FirstName"
+                                            value="<%= oldinput?.FirstName || '' %>"
+                    placeholder="First Name"
+                    required
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+
+                <!-- Last Name -->
+
+                <input
+                    type="text"
+                    name="LastName"
+                    value="<%= oldinput?.LastName || '' %>"
+                    placeholder="Last Name"
+                    required
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+
+                <!-- Email -->
+
+                <input
+                    type="email"
+                    name="email"
+                    value="<%= oldinput?.email || '' %>"
+                    placeholder="Email Address"
+                    required
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+
+                <!-- Password -->
+
+                <input
+                    type="password"
+                    name="password"
+
+                    placeholder="Password"
+                    required
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+
+                <!-- Confirm Password -->
+
+                <input
+                    type="password"
+                    name="confirmpassword"
+                    placeholder="Confirm Password"
+                    required
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100">
+
+                <!-- Terms -->
+
+                <label class="flex items-start gap-3 text-left">
+
+                    <input
+                        type="checkbox"
+                        name="terms"
+                            <%= oldinput?.terms === "on" ? "checked" : "" %>
+                        required
+                        class="mt-1 h-4 w-4 accent-blue-600">
+
+                    <span class="text-sm text-slate-600 leading-6">
+                        I agree to the Terms & Conditions
+                    </span>
+
+                </label>
+
+                <!-- Button -->
+
+                <button
+                    type="submit"
+                    class="w-full rounded-xl bg-blue-600 py-3 text-white font-semibold text-lg hover:bg-blue-700 transition">
+
+                    Create Account
+
+                </button>
+
+                <!-- Back -->
+
+                <a
+                    href="/"
+                    class="block text-center text-blue-600 font-medium hover:underline">
+
+                    ← Back to Home
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

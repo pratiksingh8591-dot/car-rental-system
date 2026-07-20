@@ -22,8 +22,7 @@
 
 		body {
 			font-family: 'DM Sans', sans-serif;
-			background: radial-gradient(70% 60% at 10% 5%, #e0f2fe 0%, transparent 55%),
-				linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+			background: #eef1f8;
 		}
 
 		h1, h2 { font-family: 'Syne', sans-serif; }
@@ -54,36 +53,52 @@
 			margin-top: 0.25rem;
 		}
 
+		.back-link {
+			color: var(--muted);
+			font-size: 0.85rem;
+			text-decoration: none;
+			display: inline-block;
+			margin-top: 0.4rem;
+		}
+
+		.back-link:hover { text-decoration: underline; }
+
 		.fav-grid {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			grid-template-columns: repeat(auto-fill, minmax(220px, 260px));
 			gap: 1.4rem;
 		}
 
+		/* ── Card ── */
 		.fav-card {
 			background: var(--card);
 			border-radius: 1.4rem;
 			overflow: hidden;
-			border: 1px solid rgba(148, 163, 184, 0.2);
-			box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+			box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+			display: flex;
+			flex-direction: column;
 			transition: transform 0.2s ease, box-shadow 0.2s ease;
 		}
 
 		.fav-card:hover {
 			transform: translateY(-4px);
-			box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+			box-shadow: 0 12px 32px rgba(15, 23, 42, 0.13);
 		}
 
+		/* ── Media area: warm cream like screenshot ── */
 		.fav-media {
-			background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
-			height: 180px;
+			background: #fdf6ec;
+			height: 170px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 1.2rem;
 		}
 
 		.fav-media img {
 			width: 100%;
 			height: 100%;
-			object-fit: cover;
-			display: block;
+			object-fit: contain;
 		}
 
 		.car-card-placeholder {
@@ -94,84 +109,76 @@
 			justify-content: center;
 		}
 
+		/* ── Body ── */
 		.fav-body {
-			padding: 1.2rem 1.25rem 1.4rem;
+			padding: 1.1rem 1.2rem 1.3rem;
 			display: flex;
 			flex-direction: column;
-			gap: 0.85rem;
+			gap: 0.3rem;
 		}
 
 		.car-badge {
-			display: inline-flex;
-			align-items: center;
-			gap: 0.4rem;
-			background: var(--accent-soft);
-			color: var(--accent-deep);
-			font-size: 0.7rem;
+			display: inline-block;
+			background: #eff6ff;
+			color: var(--accent);
+			font-size: 0.65rem;
 			font-weight: 700;
 			letter-spacing: 0.08em;
 			text-transform: uppercase;
 			padding: 3px 10px;
 			border-radius: 999px;
+			width: fit-content;
+			margin-bottom: 0.25rem;
 		}
 
 		.car-name {
 			font-family: 'Syne', sans-serif;
-			font-size: 1.2rem;
+			font-size: 1.15rem;
 			font-weight: 800;
 			color: var(--ink);
 			line-height: 1.25;
 		}
 
-		.fav-meta {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-			gap: 0.5rem;
+		.car-meta {
 			color: var(--muted);
-			font-weight: 600;
-			letter-spacing: 0.02em;
+			font-size: 0.82rem;
+			font-weight: 500;
+			line-height: 1.8;
+			margin-bottom: 0.1rem;
 		}
 
-		.fav-meta span {
-			background: var(--wash);
-			border: 1px solid var(--line);
-			border-radius: 0.8rem;
-			padding: 0.45rem 0.65rem;
+		.details-link {
+			color: var(--muted);
+			font-size: 0.82rem;
+			font-weight: 500;
+			text-decoration: none;
+			margin-bottom: 0.5rem;
 		}
 
-		.fav-actions {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-			gap: 0.6rem;
-		}
+		.details-link:hover { text-decoration: underline; }
 
-		.primary-button {
-			background: linear-gradient(135deg, var(--accent), #60a5fa);
-			border: none;
+		/* ── Book button ── */
+		.book-btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			background: var(--accent);
 			color: #fff;
-			box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
-			transition: transform 0.2s ease, box-shadow 0.2s ease;
+			border: none;
+			border-radius: 0.75rem;
+			padding: 0.65rem 1rem;
+			font-size: 0.9rem;
+			font-weight: 700;
+			cursor: pointer;
+			text-decoration: none;
+			margin-top: 0.4rem;
+			transition: background 0.18s ease;
 		}
 
-		.primary-button:hover {
-			transform: translateY(-1px);
-			box-shadow: 0 18px 28px rgba(37, 99, 235, 0.32);
-		}
+		.book-btn:hover { background: var(--accent-deep); }
 
-		.ghost-button {
-			background: #fff;
-			border: 1px solid #bfdbfe;
-			color: var(--accent-deep);
-			box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-			transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-		}
-
-		.ghost-button:hover {
-			transform: translateY(-1px);
-			border-color: #93c5fd;
-			box-shadow: 0 12px 22px rgba(15, 23, 42, 0.12);
-		}
-
+		/* ── Empty state ── */
 		.empty-state {
 			border: 2px dashed #cbd5e1;
 			border-radius: 1.4rem;
@@ -183,14 +190,14 @@
 		}
 	</style>
 </head>
-<body class="min-h-screen bg-slate-100 text-slate-800">
+<body class="min-h-screen text-slate-800">
 	<%- include('../partials/navbar') %>
 	<main class="page-shell">
 		<section class="page-header">
 			<div>
 				<h2 class="page-title">Favourites</h2>
 				<p class="page-subtitle">Your saved cars, ready to book.</p>
-					<a href="/" class="back-link">&larr; Back to cars</a>
+				<a href="/" class="back-link">&larr; Back to cars</a>
 			</div>
 			<% if (favourites.length > 0) { %>
 				<span class="text-sm text-slate-500"><%= favourites.length %> car<%= favourites.length > 1 ? 's' : '' %></span>
@@ -203,31 +210,49 @@
 			<% } else { %>
 				<% favourites.forEach((car) => { %>
 					<article class="fav-card">
+
+						<!-- Image / placeholder -->
 						<div class="fav-media">
 							<% if (car.photoUrl) { %>
 								<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
 							<% } else { %>
 								<div class="car-card-placeholder">
-									<svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8l2 5H6l2-5zM3 12h18v5a1 1 0 01-1 1H4a1 1 0 01-1-1v-5zm4 5v1m10-1v1" />
+									<!-- Flat car SVG matching screenshot style -->
+									<svg viewBox="0 0 160 90" width="140" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect x="10" y="38" width="140" height="32" rx="8" fill="url(#carGrad)"/>
+										<rect x="34" y="22" width="80" height="24" rx="6" fill="#1e293b"/>
+										<rect x="38" y="26" width="34" height="16" rx="3" fill="#334155"/>
+										<rect x="78" y="26" width="32" height="16" rx="3" fill="#334155"/>
+										<circle cx="38" cy="72" r="12" fill="#1e293b"/>
+										<circle cx="38" cy="72" r="6" fill="#fbbf24"/>
+										<circle cx="118" cy="72" r="12" fill="#1e293b"/>
+										<circle cx="118" cy="72" r="6" fill="#fbbf24"/>
+										<defs>
+											<linearGradient id="carGrad" x1="10" y1="38" x2="150" y2="70" gradientUnits="userSpaceOnUse">
+												<stop stop-color="#c2410c"/>
+												<stop offset="1" stop-color="#ea580c"/>
+											</linearGradient>
+										</defs>
 									</svg>
 								</div>
 							<% } %>
 						</div>
+
+						<!-- Card body -->
 						<div class="fav-body">
 							<span class="car-badge">Car</span>
 							<div class="car-name"><%= car.name %></div>
-							<div class="fav-meta">
-								<span><%= car.cno %></span>
-								<span><%= car.carRate %>/hr</span>
+							<div class="car-meta">
+								<%= car.carNo %><br>
+								<%= car.carRate %>/hr
 							</div>
-							<div class="fav-actions">
-								<a class="ghost-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition" href="/car/<%= car.id %>">Details</a>
-							</div>
-						      <form action="/delete/<%= car.id %>" method="POST" class="mt-4">
+							<a href="/car/<%= car._id %>" class="details-link">details</a>
+							<a href="/book/<%= car._id %>" class="book-btn">Book</a>
+							<form action="/delete/<%= car._id %>" method="POST" class="mt-4">
 									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">delete</button>
 								</form>
 						</div>
+
 					</article>
 				<% }) %>
 			<% } %>

@@ -113,51 +113,108 @@
 			<h1 class="text-2xl font-bold">My Booking</h1>
 			<p class="mt-1 text-sm text-slate-600">View your current and past bookings.</p>
 			<div class="car-scroll mt-4">
-				<% if (bookings && bookings.length === 0) { %>
-					<div class="empty-state">No bookings yet.</div>
-				<% } else { %>
-					<% bookings.forEach((booking) => { %>
-						<% const car = booking.car || {}; %>
-						<div class="car-card">
-							<% if (car.photoUrl) { %>
-								<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
-							<% } else { %>
-								<div class="car-card-placeholder">
-									<svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8l2 5H6l2-5zM3 12h18v5a1 1 0 01-1 1H4a1 1 0 01-1-1v-5zm4 5v1m10-1v1" />
-									</svg>
-								</div>
-							<% } %>
-							<div class="car-card-body">
-								<span class="car-badge">Car</span>
-								<div class="car-name"><%= car.name %></div>
-								<div class="car-number"><%= car.cno %></div>
-								<div class="car-number"><%= car.carRate %></div>
-								<div class="car-number">
-									<% const bookedAt = booking.bookedAt || booking.bookedat; %>
-									Booked: <%= bookedAt ? new Date(bookedAt)
-										.toLocaleString("en-GB", {
-											day: "2-digit",
-											month: "short",
-											year: "numeric",
-											hour: "2-digit",
-											minute: "2-digit",
-											hour12: true,
-										})
-										.replace("am", "AM")
-										.replace("pm", "PM") : "" %>
-								</div>
-								<div>
-                                   <% if (booking.status !== "accepted") { %>
-									<p class="text-red-600">YOUR BOOKING IS UNDER PROCESS</p>
-									<% } else { %>
-									<p class="text-green-600">YOUR BOOKING IS ACCEPTED</p>
-									<% } %>
-								</div>
-							</div>
-						</div>
-					<% }) %>
-				<% } %>
+			<% if (bookings && bookings.length === 0) { %>
+
+	<div class="empty-state">No bookings yet.</div>
+
+<% } else { %>
+
+	<% bookings.forEach((booking) => { %>
+
+		<div class="car-card">
+
+			<% if (booking.photoUrl) { %>
+
+				<img 
+				src="<%= booking.photoUrl %>" 
+				alt="<%= booking.name %>" 
+				/>
+
+			<% } else { %>
+
+				<div class="car-card-placeholder">
+					<svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8l2 5H6l2-5zM3 12h18v5a1 1 0 01-1 1H4a1 1 0 01-1-1v-5zm4 5v1m10-1v1" />
+					</svg>
+				</div>
+
+			<% } %>
+
+
+			<div class="car-card-body">
+
+				<span class="car-badge">
+					Car
+				</span>
+
+
+				<div class="car-name">
+					<%= booking.name %>
+				</div>
+
+
+				<div class="car-number">
+					Car No: <%= booking.carNo %>
+				</div>
+
+
+				<div class="car-number">
+					₹<%= booking.carRate %>
+				</div>
+
+
+				<div class="car-number">
+
+					<% const bookedAt = booking.bookedAt || booking.bookedat; %>
+
+					Booked:
+					<%= bookedAt 
+					? new Date(bookedAt)
+					.toLocaleString("en-GB",{
+						day:"2-digit",
+						month:"short",
+						year:"numeric",
+						hour:"2-digit",
+						minute:"2-digit",
+						hour12:true
+					})
+					.replace("am","AM")
+					.replace("pm","PM")
+					: "" %>
+
+				</div>
+
+
+				<div>
+
+					<% if (booking.status === "pending") { %>
+
+						<p class="text-yellow-300">
+							YOUR BOOKING IS UNDER PROCESS
+						</p>
+                      
+					<% } else if(booking.status==="rejected") { %>
+
+						<p class="text-red-600">
+							YOUR BOOKING IS REJECTED
+						</p>
+
+					<% } else{ %>
+							<p class="text-green-600">
+							YOUR BOOKING IS ACCEPTED
+						</p>
+						<%} %>
+
+				</div>
+
+
+			</div>
+
+		</div>
+
+	<% }) %>
+
+<% } %>
 			</div>
 			
 		</section>

@@ -1,0 +1,13 @@
+     <% if (typeof errors !== "undefined"  && errors.length > 0) { %>
+    <div class="mb-6 rounded-lg border border-red-300 bg-red-50 p-4">
+        <h3 class="mb-2 font-semibold text-red-700">
+            Please fix the following errors:
+        </h3>
+
+        <ul class="list-disc pl-5 text-sm text-red-600">
+            <% errors.forEach(error => { %>
+                <li><%= error %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>

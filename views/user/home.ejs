@@ -121,14 +121,25 @@
 <body class="min-h-screen bg-slate-100 text-slate-800">
 	<%- include('../partials/navbar') %>
 	<main class="mx-auto max-w-6xl px-4 py-10 space-y-8">
+		
 
 		<!-- Hero Section -->
 		<section class="rounded-2xl bg-white p-6 shadow">
 			<h1 class="text-3xl font-bold tracking-tight">Welcome to Car Rental</h1>
 			<p class="mt-2 text-slate-600">Manage your cars and bookings in one place.</p>
 			<div class="mt-5 flex flex-wrap gap-3">
+				<% if(isLoggedIN) { %>
 				<a href="/my-booking" class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">My Booking</a>
 				<a href="/favourites" class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">My Favourites</a>
+				<% } %>
+				<% if(!isLoggedIN) { %>
+				<a href="/login" class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">Log-in</a>
+					<a href="/signup"  class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">sign-up</a>
+				<% } else { %>
+					<form action="/logout" method="POST">
+						<button type="submit"  class="inline-block rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50">Log-out</button>
+					</form>
+						<% } %>
 			</div>
 			
 			
@@ -150,7 +161,7 @@
 					<% lcar.forEach((car) => { %>
 						<div class="car-card">
 							<% if (car.photoUrl) { %>
-								<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
+								<img src="<%= car.photoUrl %>" alt="<%= car.carName %>" />
 							<% } else { %>
 								<div class="car-card-placeholder">
 									<svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
@@ -160,18 +171,23 @@
 							<% } %>
 							<div class="car-card-body">
 								<span class="car-badge">Car</span>
-								<div class="car-name"><%= car.name %></div>
-								<div class="car-number"><%= car.cno %></div>
+								<div class="car-name"><%= car.carName %></div>
+								<div class="car-number"><%= car.carNo %></div>
 								<div class="car-number"><%= car.carRate %>/hr</div>
 								
-								<a class="mt-4" href="/car/<%= car.id %>">details</a>
-								<form action="/book" method="POST" class="mt-4">
-									<input type="hidden" name="carName" value="<%= car.name %>">
-									<input type="hidden" name="carNo" value="<%= car.cno %>">
-									<input type="hidden" name="carPhoto" value="<%= car.photoUrl %>">
-									<input type="hidden" name="carRate" value="<%= car.carRate %>">
-									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Book</button>
-								</form>
+								<a class="mt-4" href="/car/<%= car._id %>">details</a>
+							<form action="/book/<%= car._id %>" method="POST">
+
+								<input 
+								type="hidden" 
+								name="id" 
+								value="<%= car._id %>"
+								>
+
+                               <button class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Book</button>
+
+                                </form>
+								
 							</div>
 						</div>
 					<% }) %>

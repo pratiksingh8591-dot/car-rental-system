@@ -1,8 +1,10 @@
 const Car = require("../models/cardata");
 const http = require("http");
 const https = require("https");
-const Booking = require("../models/booking");
-const favourites = require("../models/favourites");
+
+const Favourite = require("../models/favourites");
+
+const booking = require("../models/booking");
 const lcar = [];
 
 const isImageUrl = (value) => /\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i.test(value);
@@ -42,11 +44,16 @@ const extractImageFromHtml = (html) => {
 };
 
 const getaddcar = (req, res, next) => {
-   res.render("host/addcar", { content: "ADD CAR AND GET GREAT DEALS" });
+   res.render("host/addcar", {
+      isLoggedIN: req.session.isLoggedIN,
+      content: "ADD CAR AND GET GREAT DEALS"
+   });
 };
 
 const postcar = async (req, res, next) => {
+   console.log(req.body)
    const { carName, carNo, carPhoto, carRate, carDescription } = req.body;
+    
    let photoUrl = (carPhoto || "").trim();
    const description = (carDescription || "").trim();
 
@@ -62,150 +69,279 @@ const postcar = async (req, res, next) => {
       }
    }
 
-   const newCar = new Car(carName, carNo, photoUrl, carRate, description);
-   newCar.save();
+   const newCar = new Car({carName, carNo,carRate, photoUrl, description});
+   newCar.save().then(()=>{
+      console.log(lcar[0]);
+      console.log('car added succesfully');
+   });
 
-   res.render("host/caradded", { content: "thank you for adding" });
+   res.render("host/caradded", {
+      isLoggedIN: req.session.isLoggedIN,
+      content: "thank you for adding"
+   });
 };
 
 const getcar = (req, res, next) => {
-   const lcar = Car.fetchAll((lcar) => {
-      res.render("user/home", { lcar: lcar });
-   });
+
+    Car.find().then((cars)=>{
+      res.render("user/home", {
+         isLoggedIN: req.session.isLoggedIN,
+         lcar: cars
+      })
+   })
+      console.log("session:",req.session)
+
 };
+
 const gethostview=(req, res, next) => {
-   Booking.fetchAll((bookings) => {
-      res.render("host/hostview", { bookings: bookings.reverse() });
+   booking.find().then((bookings)=>{
+      res.render("host/hostview", {
+         isLoggedIN: req.session.isLoggedIN,
+         bookings
+      });
    });
 };
 const getManageCar = (req, res) => {
-   Car.fetchAll((lcar) => {
-      res.render("host/manage-car", { lcar: lcar.reverse() });
-   });
+  Car.find().then((cars)=>{
+      res.render("host/manage-car", {
+         isLoggedIN: req.session.isLoggedIN,
+         lcar: cars
+      })
+   })
+
 };
-const getEditCar = (req, res) => {
-   const carID = req.params.carID;
+const getEditCar = (req, res,next) => {
+   const id = req.params.id;
    const editing = req.query.editing
       ? req.query.editing.toLowerCase() === "true"
       : true;
-   console.log(carID, editing);
-   Car.FindBy(carID, (car) => {
+   console.log(id, editing);
+   Car.findById(id).then(car => {
       if (!car) {
          return res.redirect("/host/");
       }
-      res.render("host/editcar",{car});
+      res.render("host/editcar", {
+         isLoggedIN: req.session.isLoggedIN,
+         car,
+         editing
+      });
       console.log(car)
-      editing:editing;
    });
 };
-
+const postEditcar=(req,res)=>{
+   const id=req.params.id
+    const { carName, carNo,carRate,carPhoto, carDescription } = req.body;
+    Car.findById(id).then((car)=>{
+   car.carName=carName;
+   car.carNo=carNo;
+   car.carRate=carRate;
+   car.photoUrl=carPhoto;
+   car.description=carDescription;
+   console.log(car);
+   return car.save()
+   }) .then((car) => {
+        return Favourite.updateMany(
+            { carNo: car.carNo },
+            {
+                carName: car.carName,
+                carRate: car.carRate,
+                photoUrl: car.photoUrl
+            }
+        );
+    })
+   .then(() => {
+            console.log("Car edited successfully");
+            res.redirect("/host/manage-car");
+        }).catch(err=>{
+      console.log("err while finding car",err);
+      res.redirect("/host/")
+    })
+     
+}
 const getAdminPanel = (req, res) => {
-   Car.fetchAll((cars)=>{
-   res.render("host/admin-panel",{cars});
-   });
+    Car.find().then(([cars])=>{
+         res.render("host/admin-panel", {
+            isLoggedIN: req.session.isLoggedIN,
+            cars: cars
+         })
+   })
+
 };
 
 const getMyBooking = (req, res) => {
-   Booking.fetchAll((bookings) => {
-      res.render("user/my-booking", { content: "HERE ARE YOUR BOOKED CARS", bookings: bookings.reverse() });
+   booking.find().then(bookings=>{
+      res.render("user/my-booking", {
+         isLoggedIN: req.session.isLoggedIN,
+         content: "HERE ARE YOUR BOOKED CARS",
+         bookings: bookings.reverse()
+      });
    });
 };
 
 const bookcar=(req,res)=>{
-    const { carName, carNo, carPhoto, carRate } = req.body;
-   const booking = new Booking({
-      name: carName,
-      cno: carNo,
-      photoUrl: carPhoto,
-      carRate: carRate,
-   });
-   booking.save();
-   res.redirect("/my-booking");
-};
+     const id = req.params.id;
+     console.log(id);
+    const { carName, carNo,photoUrl, carRate,bookedAt } = req.body;
+   Car.findById(id)
+   .then((car)=>{
 
+    if (!car) {
+       
+        return res.status(404).send("Car not found");
+        res.redirect("/")
+    }
+
+
+      const newBooking = new booking({
+         carName:car.carName,
+         carNo:car.carNo,
+         photoUrl:car.photoUrl,
+         carRate:car.carRate,
+         bookedAt: new Date()
+
+   });
+    
+        console.log(newBooking)
+      return newBooking.save();
+   })
+   .then(()=>{
+      res.redirect("/my-booking");
+   })
+   .catch((err)=>{
+      console.log(err);
+   });
+};
+const potbookcar=(req,res,next)=>{
+   booking.find()
+   .then((bookings)=>{
+      res.render("my-booking", {
+         isLoggedIN: req.session.isLoggedIN,
+         bookings: bookings
+      });
+   }).catch((err) => {
+            console.log(err);
+            res.status(500).send("Something went wrong");
+        });
+
+   }
+   
 const getFavList = (req, res) => {
-    favourites.getfavourites((favIds) => {
-         Car.fetchAll((cars) => {
-             const favList = cars.filter((car) => favIds.includes(car.id));
-             res.render("user/favourites", { content: "YOUR FAVOURITES", favourites: favList });
+    favourites.getfavourites.then(([favourites]) => {
+              Car.find().then(([cars])=>{
+             const favList = cars.filter((car) => favIds.includes());
+                   res.render("user/favourites", {
+                      isLoggedIN: req.session.isLoggedIN,
+                      content: "YOUR FAVOURITES",
+                      favourites: favList
+                   });
          });
     });
 };
-const postfavourites = (req, res,next) => {
-   
-   favourites.addfavourites(req.body.id ,error=>{
-      if(error){
-         console.log("error ",error);
-      }
-      res.redirect("/favourites");
-   })
-};
-const getfavourites = (req, res) => {
-   favourites.getfavourites((favIds) => {
-      Car.fetchAll((cars) => {
-         const favList = cars.filter((car) => favIds.includes(car.id));
-         res.render("user/favourites", { content: " HERE ARE YOUR FAVOURITES CARS ", favourites: favList });
-      });
-   });
+
+const addfavourites = (req, res) => {
+    const id = req.params.id;
+
+ Car.findById(id)
+ .then(car=>{
+    const favourite = new Favourite({
+      carName: car.carName,
+       carNo:car.carNo,
+        carRate:car.carRate,
+       photoUrl:car.photoUrl
+      
+ });
+    console.log(favourite)
+    return favourite.save();
+
+ })
+ .then(()=>{
+    res.redirect("/favourites");
+ })
+ .catch(err=>{
+    console.log(err);
+ });
 };
 const deletefavourites=(req,res) =>{
-  const delfav=req.params.carID;
-         console.log("Deleted id",delfav)
-         favourites.deletefavourites(delfav,error=>{
-            if(error){
-               console.log("kya chedha bhonnsdi");
-            }
+  const id=req.params.id;
+         Favourite.findByIdAndDelete(id).then(()=>{
             res.redirect("/favourites");
-         })  
+         })
+         .catch((err)=>{
+            console.log(err)
+         })
+          
 }
+const getfavourites = (req,res)=>{
+
+ Favourite.find()
+ .then(favourites=>{
+
+   res.render("user/favourites", {
+      favourites: favourites
+   });
+
+ });
+
+};
 const getCarAdded = (req, res) => {
    res.render("host/caradded");
 };
 const acceptBooking = (req, res) => {
-   const { bookedat } = req.params;
-   Booking.acceptByBookedAt(bookedat, () => {
-      res.redirect("/host/accept");
-   });
+   const id = req.params.id;
+  booking.findById(id).then((bookingData)=>{
+     bookingData.status="accepted";
+     return bookingData.save()
+  }).then(()=>{
+   res.render("host/accept")
+  }).catch(err=>{
+    console.log(err)
+  })
+    
 };
 const getAcceptView=(req,res)=>{
    res.render("host/accept")
 }
 
+const getRejectView=(req,res)=>{
+   res.render("host/reject")
+}
 const deleteBooking = (req, res) => {
-   const { bookedat } = req.params;
-   Booking.deleteByBookedAt(bookedat, () => {
-      res.redirect("/host/");
-   });
+   const id = req.params.id;
+   booking.findById(id).then((bookingData)=>{
+      bookingData.status="rejected"
+     return  bookingData.save()
+      
+   }).then(()=>{
+      res.redirect("/host/reject")
+   }).catch((error)=>{
+        console.log("kya chedha bhonnsdi");
+   })
 };
-const potbookcar=(req,res,next)=>{
-   const { carName, carNo, carPhoto,carRate} = req.body;
-   
-   }
-   const getcardetails=(req,res)=>{
-      const carID=req.params.carID;
-      Car.FindBy(carID,car=>{
-         if(!car){
-            console.log("error");
-            Car.fetchAll(lcar=>{            
-               res.render("user/home", { lcar: lcar });})
 
-         }
-         else{
-           console.log("car details",car);
-           res.render("user/details",{content : "get detailed  overview of ur car", car});
-         }
-        
+const getcardetails= (req,res)=>{
+  const id=req.params.id;
+    Car.findById(id).then(car=>{
+      if(!car){
+         res.redirect("/");
+      }
+      return Favourite.findOne({carNo:car.carNo}).then(favourite=>{
+          car.isFavourite = !!favourite;
+
+                    res.render("user/details", {
+                        car: car
+                    });
       })
-    
-   }
+    }).catch(err=>{
+      console.log(err);
+    })
+}
      const deleteCar=(req,res)=>{
-         const CarID=req.params.CarID;
-         console.log("Deleted id",CarID)
-         Car.Deleteby(CarID,error=>{
-            if(error){
-               console.log("kya chedha bhonnsdi");
-            }
+         const id=req.params.CarID;
+         console.log("Deleted id",id)
+         Car.findByIdAndDelete(id).then(()=>{
             res.redirect("/host/manage-car");
+         }).catch((error)=>{
+           console.log("kya chedha bhonnsdi");
          })
       }
    
@@ -220,12 +356,14 @@ module.exports = {
    bookcar,
    getFavList,
    getAcceptView,
-   postfavourites,
+   getRejectView,
+   getfavourites,
    getcardetails,
    deleteCar,
    getCarAdded,
    getEditCar,
-   getfavourites,
+   postEditcar,
+   addfavourites,
    deletefavourites,
    acceptBooking,
    deleteBooking,

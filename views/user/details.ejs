@@ -197,22 +197,31 @@
 					<span class="car-badge">Car</span>
 					<div class="car-name"><%= car.name %></div>
 					<div class="car-meta">
-						<span>Number: <%= car.cno %></span>
+						<span>Number: <%= car.carNo %></span>
 						<span>Rate: <%= car.carRate %>/hr</span>
 					</div>
 					<div class="car-description"><%= car.description || 'No description provided yet.' %></div>
 					<div class="actions">
 						<form action="/book" method="POST">
 							<input type="hidden" name="carName" value="<%= car.name %>">
-							<input type="hidden" name="carNo" value="<%= car.cno %>">
+							<input type="hidden" name="carNo" value="<%= car.carNo %>">
 							<input type="hidden" name="carPhoto" value="<%= car.photoUrl %>">
 							<input type="hidden" name="carRate" value="<%= car.carRate %>">
 							<button type="submit" class="primary-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition">Book now</button>
 						</form>
-						<form action="/favourites" method="POST">
-							<input type="hidden" name="id" value="<%= car.id %>" />
+						<% if (car.isFavourite) { %>
+
+    <a href="/favourites"
+        class="ghost-button inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition">
+        ❤️ View in Favourites
+    </a>
+
+<% } else { %>
+						<form action="/favourites/<%= car._id %>" method="POST">
+							<input type="hidden" name="id" value="<%= car._id %>" />
 							<button type="submit" class="ghost-button inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition">Add to favourites</button>
 						</form>
+						<% } %>
 					</div>
 				</div>
 			</div>

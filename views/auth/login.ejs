@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/output.css">
+	<title>Add Car</title>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-800">
+	<%- include('../partials/navbar') %>
+	<a href="/" class="back-link"> Back to cars</a>
+	<main class="mx-auto max-w-xl px-4 py-10">
+		<section class="rounded-2xl bg-white p-6 shadow">
+			<h1 class="text-2xl font-bold">Log-in</h1>
+			<p class="mt-1 text-sm text-slate-600">Enter your details below.</p>
+				
+
+			<form action="/login" method="POST" class="mt-6 space-y-4">
+				<%- include('../partials/errors') %>
+				<div>
+					
+					<input type="email" placeholder="Email/Username" name="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+				</div>
+
+				<div>
+					
+					<input type="password" placeholder="Password" name="password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+				</div>
+			  
+                 
+				<div class="flex items-center gap-3 pt-1">
+					<button type="submit" class="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700">Submit</button>
+				</div>
+			</form>
+		</section>
+	</main>
+</body>
+</html>

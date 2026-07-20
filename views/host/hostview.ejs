@@ -134,8 +134,13 @@
 						<% const bookedAt = booking.bookedat || booking.bookedAt; %>
 						<% const status = booking.status || "pending"; %>
 						<div class="car-card">
-							<% if (car.photoUrl) { %>
-								<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
+							
+			<% if (booking.photoUrl) { %>
+
+				<img 
+				src="<%= booking.photoUrl %>" 
+				alt="<%= booking.name %>" 
+				/>
 							<% } else { %>
 								<div class="car-card-placeholder">
 									<svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
@@ -146,7 +151,7 @@
 							<div class="car-card-body">
 								<span class="car-badge"><%= status %></span>
 								<div class="car-name"><%= car.name %></div>
-								<div class="car-number"><%= car.cno %></div>
+								<div class="car-number"><%= car.carNo %></div>
 								<div class="car-number"><%= car.carRate %>/hr</div>
 								<div class="car-number">
 									Booked: <%= bookedAt ? new Date(bookedAt)
@@ -160,17 +165,20 @@
 										})
 										.replace("am", "AM")
 										.replace("pm", "PM") : "" %>
-										<a class="mt-4" href="/car/<%= car.id %>">details</a>
+										<a class="mt-4" href="/car/<%= car._id %>">details</a>
 								</div>
 								<div class="mt-4 flex gap-3">
-									<% if (status !== "accepted") { %>
-										<form action="/host/bookings/<%= bookedAt %>/accept" method="POST" class="flex-1">
+									<% if (booking.status === "pending") { %>
+										<form action="/host/bookings/<%= booking._id %>/accept" method="POST" class="flex-1">
 											<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">accept</button>
 										</form>
-									<% } %>
-									<form action="/host/bookings/<%= bookedAt %>/delete" method="POST" class="flex-1">
-										<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Delete</button>
+									
+									<form action="/host/bookings/<%= booking._id %>/reject" method="POST" class="flex-1">
+										<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Reject</button>
 									</form>
+									<% } else {%>
+                                           <p>Status: <%= booking.status %></p>
+                                    <% } %>
 								</div>
 						</div>
 						<% }) %>

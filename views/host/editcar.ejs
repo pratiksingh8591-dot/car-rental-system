@@ -59,15 +59,19 @@
 		}
 
 		.detail-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-			gap: 0;
+			display: flex;
+			flex-direction: column;
 		}
 
 		.media {
 			position: relative;
 			background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
-			min-height: 280px;
+			width: 100%;
+			height: 340px;
+		}
+
+		@media (max-width: 640px) {
+			.media { height: 220px; }
 		}
 
 		.media img {
@@ -85,11 +89,26 @@
 			justify-content: center;
 		}
 
+		/* ---------- Form panel ---------- */
+
 		.info {
-			padding: 2rem 2.2rem 2.2rem;
+			padding: 2.4rem 2.4rem 2.6rem;
 			display: flex;
-			flex-direction: column;
-			gap: 1.2rem;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			background: var(--card);
+		}
+
+		.info form {
+			width: 100%;
+			max-width: 640px;
+		}
+
+		.form-header {
+			display: flex;
+			flex-direction:column;
+			gap: 0.5rem;
 		}
 
 		.car-badge {
@@ -104,53 +123,133 @@
 			text-transform: uppercase;
 			padding: 4px 12px;
 			border-radius: 999px;
+			width:fit-content;
 		}
 
-		.car-name {
+		.form-title {
 			font-family: 'Syne', sans-serif;
-			font-size: 2rem;
+			font-size: 1.5rem;
 			font-weight: 800;
 			color: var(--ink);
-			line-height: 1.15;
 		}
 
-		.car-meta {
+		.form-subtitle {
+			color: var(--muted);
+			font-size: 0.92rem;
+		}
+
+		/* Field groups replace one long stack with breathing room + logical clusters */
+
+		.field-group {
+			display: flex;
+			flex-direction: column;
+			gap: 1.1rem;
+			padding: 1.4rem 1.4rem 1.5rem;
+			background: var(--wash);
+			border: 1px solid var(--line);
+			border-radius: 1.1rem;
+		}
+
+		.group-label {
+			font-size: 0.7rem;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
+		.field-row {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-			gap: 0.75rem;
+			grid-template-columns: 1fr 1fr;
+			gap: 1rem;
+		}
+
+		@media (max-width: 480px) {
+			.field-row { grid-template-columns: 1fr; }
+		}
+
+		.field {
+			display: flex;
+			flex-direction: column;
+			gap: 0.4rem;
+		}
+
+		.field label {
+			font-size: 0.85rem;
+			font-weight: 600;
+			color: var(--ink);
+		}
+
+		.field .hint {
+			font-size: 0.76rem;
+			color: var(--muted);
+			font-weight: 400;
+		}
+
+		.field input,
+		.field textarea {
+			width: 100%;
+			background: #fff;
+			border: 1px solid var(--line);
+			border-radius: 0.7rem;
+			padding: 0.65rem 0.85rem;
+			font-size: 0.94rem;
+			color: var(--ink);
+			outline: none;
+			transition: border-color 0.15s ease, box-shadow 0.15s ease;
+		}
+
+		.field input:focus,
+		.field textarea:focus {
+			border-color: var(--accent);
+			box-shadow: 0 0 0 3px var(--accent-soft);
+		}
+
+		.field textarea {
+			resize: vertical;
+			min-height: 110px;
+			line-height: 1.55;
+		}
+
+		.rate-input-wrap {
+			position: relative;
+		}
+
+		.rate-input-wrap input {
+			padding-left: 2.1rem;
+		}
+
+		.rate-prefix {
+			position: absolute;
+			left: 0.85rem;
+			top: 50%;
+			transform: translateY(-50%);
 			color: var(--muted);
 			font-weight: 600;
-			letter-spacing: 0.02em;
+			font-size: 0.9rem;
+			pointer-events: none;
 		}
 
-		.car-meta span {
-			background: var(--wash);
-			border: 1px solid var(--line);
-			border-radius: 0.9rem;
-			padding: 0.6rem 0.85rem;
-		}
-
-		.car-description {
-			background: var(--wash);
-			border: 1px solid var(--line);
-			border-radius: 1rem;
-			padding: 1rem 1.1rem;
-			color: #475569;
-			line-height: 1.65;
-		}
+		/* ---------- Actions ---------- */
 
 		.actions {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			display: flex;
 			gap: 0.75rem;
+			padding-top: 0.25rem;
+		}
+
+		@media (max-width: 480px) {
+			.actions { flex-direction: column; }
 		}
 
 		.primary-button {
+			flex: 1;
 			background: linear-gradient(135deg, var(--accent), #60a5fa);
 			border: none;
 			color: #fff;
 			box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
 			transition: transform 0.2s ease, box-shadow 0.2s ease;
+			cursor: pointer;
 		}
 
 		.primary-button:hover {
@@ -159,6 +258,7 @@
 		}
 
 		.ghost-button {
+			flex: 1;
 			background: #fff;
 			border: 1px solid #bfdbfe;
 			color: var(--accent-deep);
@@ -170,6 +270,13 @@
 			transform: translateY(-1px);
 			border-color: #93c5fd;
 			box-shadow: 0 12px 22px rgba(15, 23, 42, 0.12);
+		}
+
+		.actions a,
+		.actions button {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 	</style>
 </head>
@@ -184,7 +291,7 @@
 			<div class="detail-grid">
 				<div class="media">
 					<% if (car.photoUrl) { %>
-						<img src="<%= car.photoUrl %>" alt="<%= car.name %>" />
+						<img src="<%= car.photoUrl %>" alt="<%= car.carName %>" />
 					<% } else { %>
 						<div class="car-card-placeholder">
 							<svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
@@ -193,27 +300,95 @@
 						</div>
 					<% } %>
 				</div>
+
 				<div class="info">
-					<span class="car-badge">Car</span>
-					<div class="car-name"><%= car.name %></div>
-					<div class="car-meta">
-						<span>Number: <%= car.cno %></span>
-						<span>Rate: <%= car.carRate %>/hr</span>
-					</div>
-					<div class="car-description"><%= car.description || 'No description provided yet.' %></div>
-					<div class="actions">
-						<form action="/book" method="POST">
-							<input type="hidden" name="carName" value="<%= car.name %>">
-							<input type="hidden" name="carNo" value="<%= car.cno %>">
-							<input type="hidden" name="carPhoto" value="<%= car.photoUrl %>">
-							<input type="hidden" name="carRate" value="<%= car.carRate %>">
-							<button type="submit" class="primary-button inline-flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition">Book now</button>
-						</form>
-						<form action="/favourites" method="POST">
-							<input type="hidden" name="id" value="<%= car.id %>" />
-							<button type="submit" class="ghost-button inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition">Add to favourites</button>
-						</form>
-					</div>
+
+					<form action="/host/editcar/<%= car._id %>" method="POST" class="flex-row">
+
+						<div class="form-header">
+							<span class="car-badge">Edit Car</span>
+							<h2 class="form-title"><%= car.carName %></h2>
+							<p class="form-subtitle">Update the listing details below, then save to publish your changes.</p>
+						</div>
+
+						<div class="field-group">
+							<span class="group-label">Basics</span>
+							<div class="field-row">
+								<div class="field">
+									<label for="carName">Car name</label>
+									<input
+									    class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+										id="carName"
+										type="text"
+										name="carName"
+										value="<%= car.carName %>">
+								</div>
+								<div class="field">
+									<label for="carNo">Car number</label>
+									<input
+									 class= "w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+										id="carNo"
+										type="String"
+										name="carNo"
+										value="<%= car.carNo %>">
+								</div>
+							</div>
+							<div class="field">
+								<label for="carRate">Rate</label>
+								<div class="rate-input-wrap">
+									<span class="rate-prefix">₹</span>
+									<input
+									 class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+										id="carRate"
+										type="number"
+										name="carRate"
+										value="<%= car.carRate %>">
+								</div>
+							</div>
+						</div>
+
+						<div class="field-group">
+							<span class="group-label">Media</span>
+							<div class="field">
+								<label for="carPhoto">Photo URL</label>
+								<span class="hint">Paste a direct link to an image of the car</span>
+								<input
+								 class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+									id="photoUrl"
+									type="text"
+									name="carPhoto"
+									value="<%= car.photoUrl %>">
+							</div>
+						</div>
+
+						<div class="field-group">
+							<span class="group-label">Listing copy</span>
+							<div class="field">
+								<label for="carDescription">Description</label>
+								<textarea
+								   class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+									id="carDescription"
+									name="carDescription"
+									rows="5"><%= car.description %></textarea>
+							</div>
+						</div>
+
+						<div class="actions">
+							<button
+								type="submit"
+								class="primary-button rounded-xl py-3 font-semibold">
+								💾 Save Changes
+							</button>
+
+							
+								<a href="/host/manage-car"
+								class="ghost-button rounded-xl py-3 font-semibold">
+								Cancel
+							</a>
+						</div>
+
+					</form>
+
 				</div>
 			</div>
 		</section>

@@ -1,77 +1,68 @@
-const fs=require('fs');
-const path=require('path');
-const rootdir=require("../utils/pathutil")
+// const { ObjectId } = require('mongodb');
 
-const bookingPath = path.join(rootdir, 'data', 'booking.json');
+// // const writeBookings = (bookings, callback) => {
+   
+// // };
 
-const readBookings = (callback) => {
-    fs.readFile(bookingPath, (err, data) => {
-        if (err) {
-            callback([]);
-            return;
-        }
+// module.exports = class booking{
+//    constructor(name,carNo,photourl,carRate,bookedAt)
+//     {
+//         this.name=name
+//         this.carNo=carNo
+//         this.photoUrl=photourl
+//         this.carRate=carRate
+//         this.bookedAt=bookedAt
+//     }
+//     save() {
+//        const db=getDB();
+//       return db.collection('bookings').insertOne(this).then((result)=>{
+//         console.log(result);
+//   })
+//         }
+//         static findById(id){
+//           console.log(id)
+//          const db=getDB();
+//          return db.collection('bookings').find({_id:new ObjectId(String(id))}).next();
+//          }
+    
+//     static find(){
+       
+//       const db=getDB();
+//   return db.collection('bookings').find().toArray();  
+        
+//      }
 
-        try {
-            callback(JSON.parse(data));
-        } catch (parseError) {
-            callback([]);
-        }
-    });
-};
+//      static acceptByBookedAt(id) {
+//       const  db=getDB();
+//       return db.collection('bookings').updateOne({_id:new ObjectId(id)},{
+//             $set: {
+//                 status: "accepted"
+//             }
+//         }
+//  ).then((result)=>{
+//     console.log(result);
+//    })
+//      }
 
-const writeBookings = (bookings, callback) => {
-    fs.writeFile(bookingPath, JSON.stringify(bookings), (err) => {
-        if (callback) {
-            callback(err);
-        }
-    });
-};
-
-module.exports = class booking{
-    constructor(car,bookedat){
-        this.car=car;
-        this.bookedat=bookedat|| new Date().toISOString();
+//      static deleteByBookedAt(id) {
+//           const  db=getDB();
+//       return db.collection('bookings').deleteOne({_id:new ObjectId(id)}).then((result)=>{
+//     console.log(result);
+//    })
+// }
+// }
+const mongoose=require('mongoose');
+const bookingSchema=mongoose.Schema({
+  carName:{type:String,required: true},
+  carNo:{type:String,required:true},
+  carRate:{type:Number,required:true},
+  photoUrl:String,
+  bookedAt: Date,
+     status: {
+        type: String,
+        enum: ["pending", "accepted", "rejected"],
+        default: "pending"
     }
-    save() {
-        booking.fetchAll((bookings)=>{
-            bookings.push(this);
-            writeBookings(bookings, (err) => {
-                if(err){
-                    console.log("q ree mc",err);
-                }
-            });
-        });  
-    }
-    static fetchAll(callback){
-       readBookings(callback);
-     }
-
-     static acceptByBookedAt(bookedAt, callback) {
-        booking.fetchAll((bookings) => {
-            const updatedBookings = bookings.map((entry) => {
-                if (entry.bookedat === bookedAt) {
-                    return { ...entry, status: "accepted" };
-                }
-                return entry;
-            });
-
-            writeBookings(updatedBookings, (err) => {
-                if (callback) {
-                    callback(err);
-                }
-            });
-        });
-     }
-
-     static deleteByBookedAt(bookedAt, callback) {
-        booking.fetchAll((bookings) => {
-            const updatedBookings = bookings.filter((entry) => entry.bookedat !== bookedAt);
-
-            writeBookings(updatedBookings, (err) => {
-                if (callback) {
-                    callback(err);
-                }
-            });
-        });
-     }
-};
+  
+});
+module.exports=mongoose.model('bookings',bookingSchema);

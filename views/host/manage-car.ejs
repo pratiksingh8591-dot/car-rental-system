@@ -159,14 +159,14 @@
 							<div class="car-card-body">
 								<span class="car-badge">Car</span>
 								<div class="car-name"><%= car.name %></div>
-								<div class="car-number"><%= car.cno %></div>
+								<div class="car-number"><%= car.carNo %></div>
 								<div class="car-number"><%= car.carRate %>/hr</div>
 								
-								<a class="mt-4" href="/car/<%= car.id %>">details</a>
-								<form action="/host/editcar/<%= car.id %>" method="GET" class="mt-4">
+								<a class="mt-4" href="/car/<%= car._id %>">details</a>
+								<form action="/host/editcar/<%= car._id %>" method="GET" class="mt-4">
 									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">edit</button>
 								</form>
-								<form action="/host/delete/<%= car.id %>" method="POST" class="mt-4">
+								<form action="/host/delete/<%= car._id %>" method="POST" class="mt-4">
 									<button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">delete</button>
 								</form>
 							</div>
