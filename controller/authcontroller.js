@@ -13,7 +13,6 @@ const getlogin=(req,res)=>{
 const postlogin=async (req,res)=>{
   const{email,password}=req.body;
   const user=await User.findOne({email});
-    req.session.isLoggedIN=true
      if(!user){
     return res.status(422).render('auth/login',{
         isLoggedIN:false,
@@ -30,8 +29,12 @@ const postlogin=async (req,res)=>{
     })  
     }
     console.log(req.session)
+    req.session.isLoggedIN=true
+    req.session.usertype=user.usertype;
     req.session.save(()=>{
-       req.session.isLoggedIN=true
+      if(user.usertype === "host"){
+        return res.redirect("/host")
+      }
       res.redirect("/")
     })
 }
@@ -49,7 +52,7 @@ const getsignup=(req,res)=>{
         errors: [],
         oldinput: {}
     });
-    
+    // it is 
  }
  const postsignup=[
 
@@ -120,6 +123,7 @@ const getsignup=(req,res)=>{
     
     (req,res,next)=>{
       console.log("posting signup")
+    
    const {usertype,FirstName,LastName,email,password}=req.body;
    const errors=validationResult(req);
    console.log(errors.array())
@@ -140,8 +144,12 @@ console.log(user);
  return user.save();
  }).then(()=>{
     req.session.isLoggedIN=true;
+    req.session.usertype=usertype;
     console.log("after save")
     req.session.save(()=>{
+      if(usertype === "host"){
+        return res.redirect("/host")
+      }
       res.redirect("/")
     })
    }).catch(err=>{
@@ -157,7 +165,7 @@ console.log(user);
    })
    
  }]
- //Abcd@123
+ //Abcd@123//host pass
 module.exports={
     getlogin,
     postlogin,
