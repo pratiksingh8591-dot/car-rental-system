@@ -2,6 +2,18 @@ const User=require("../models/userdata")
 const bcrypt = require("bcrypt");
 const { check, validationResult } = require("express-validator");
 
+const storeAuthSession = (req, user) => {
+  req.session.isLoggedIN = true;
+  req.session.usertype = user.usertype;
+  req.session.user = {
+    _id: user._id.toString(),
+    FirstName: user.FirstName,
+    LastName: user.LastName,
+    email: user.email,
+    usertype: user.usertype,
+  };
+};
+
 const getlogin=(req,res)=>{
     res.render("auth/login", { 
     isLoggedIN:false, 
@@ -12,6 +24,7 @@ const getlogin=(req,res)=>{
 }
 const postlogin=async (req,res)=>{
   const{email,password}=req.body;
+ 
   const user=await User.findOne({email});
      if(!user){
     return res.status(422).render('auth/login',{
@@ -26,12 +39,21 @@ const postlogin=async (req,res)=>{
         isLoggedIN:false,
         content: "ADD CAR AND GET GREAT DEALS",
         errors:["password does not match"],
+        oldinput:{email}
     })  
     }
     console.log(req.session)
-    req.session.isLoggedIN=true
-    req.session.usertype=user.usertype;
-    req.session.save(()=>{
+    storeAuthSession(req, user);
+    req.session.save((err)=>{
+      if(err){
+        console.log("session save error:", err);
+        return res.status(500).render('auth/login',{
+          isLoggedIN:false,
+          content: "ADD CAR AND GET GREAT DEALS",
+          errors:[err.message || "Unable to create session. Please try again."],
+          oldinput:{email}
+        })
+      }
       if(user.usertype === "host"){
         return res.redirect("/host")
       }
@@ -86,7 +108,14 @@ const getsignup=(req,res)=>{
     .notEmpty()
     .withMessage("Email is required")
     .isEmail()
-    .withMessage("Enter a valid email"),
+    .withMessage("Enter a valid email")
+    .custom(async (value) => {
+      const existingUser = await User.findOne({ email: value });
+      if (existingUser) {
+        throw new Error("Email already exists");
+      }
+      return true;
+    }),
 
   check("password")
     .notEmpty()
@@ -142,11 +171,22 @@ const getsignup=(req,res)=>{
 const user= new User({FirstName,LastName,email,password:hashedpassword,usertype});
 console.log(user);
  return user.save();
- }).then(()=>{
-    req.session.isLoggedIN=true;
-    req.session.usertype=usertype;
+ }).then((savedUser)=>{
+    storeAuthSession(req, savedUser);
+
     console.log("after save")
-    req.session.save(()=>{
+    req.session.save((err)=>{
+      if(err){
+        console.log("session save error:", err);
+        return res.status(500).render('auth/signup',{
+          isLoggedIN:false,
+          content: "ADD CAR AND GET GREAT DEALS",
+          errors:[err.message || "Unable to create session. Please try again."],
+          oldinput:{
+            usertype,FirstName,LastName,email,password
+          }
+        })
+      }
       if(usertype === "host"){
         return res.redirect("/host")
       }

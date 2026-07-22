@@ -69,7 +69,8 @@ const postcar = async (req, res, next) => {
       }
    }
 
-   const newCar = new Car({carName, carNo,carRate, photoUrl, description});
+   const newCar = new Car({carName, carNo,carRate, photoUrl, description,owner: req.session.user._id
+});
    newCar.save().then(()=>{
       console.log(lcar[0]);
       console.log('car added succesfully');
@@ -102,7 +103,9 @@ const gethostview=(req, res, next) => {
    });
 };
 const getManageCar = (req, res) => {
-  Car.find().then((cars)=>{
+  Car.find(({
+   owner: req.session.user._id
+})).then((cars)=>{
       res.render("host/manage-car", {
          isLoggedIN: req.session.isLoggedIN,
          lcar: cars
