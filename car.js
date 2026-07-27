@@ -3,6 +3,7 @@ const dns = require("dns");
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const express=require('express');
+const multer=require('multer')
 const session=require('express-session')
 const Mongodbstore=require('connect-mongodb-session')(session);
 const app =express();
@@ -22,6 +23,7 @@ app.set('views', viewsPath);
 console.log('Views directory:', viewsPath);
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
+app.use(multer().single('carPhoto'))
 app.use(express.static(path.join(__dirname,'public')));
 
 const dbpath="mongodb+srv://pratiksingh8591_db_user:jGvJTLRHraQ5lP4I@car-rentaldb.pvvzlnm.mongodb.net/car-rental?appName=car-rentalDB"
@@ -29,12 +31,18 @@ const store= new Mongodbstore({
     uri:dbpath,
     collection:'sessions'
 })
+
 app.use(session({
     secret:"car rental web build by me",
     resave:false,
      saveUninitialized:true,
      store
 }))
+app.use((req, res, next) => {
+    res.locals.isLoggedIN = req.session.isLoggedIN;
+    res.locals.user = req.session.user;
+    next();
+});
 app.use((req,res,next)=>{
     console.log(req.method,req.url,req.body);
     next();

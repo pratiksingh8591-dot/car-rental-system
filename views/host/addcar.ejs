@@ -13,7 +13,7 @@
 			<h1 class="text-2xl font-bold">Add Car</h1>
 			<p class="mt-1 text-sm text-slate-600">Enter your car details below.</p>
 
-			<form action="/host/addcar" method="POST" class="mt-6 space-y-4">
+			<form action="/host/addcar" enctype="multipart/form-data" method="POST" class="mt-6 space-y-4">
 				<div>
 					<label for="car-name" class="mb-1 block text-sm font-medium">Car Name</label>
 					<input type="text" id="car-name" name="carName" required class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
@@ -29,8 +29,8 @@
 				</div>
 
 				<div>
-					<label for="car-photo" class="mb-1 block text-sm font-medium">Car Photo URL or Page URL</label>
-					<input type="text" id="car-photo" name="carPhoto" placeholder="https:// or /images/car-1.svg" class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+					<label for="car-photo" class="mb-1 block text-sm font-medium">Car Photo</label>
+					<input type="file" id="car-photo" accept="image/*" name="carPhoto" placeholder="https:// or /images/car-1.svg" class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
 				
 				</div>
 

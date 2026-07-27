@@ -53,6 +53,8 @@ const getaddcar = (req, res, next) => {
 const postcar = async (req, res, next) => {
    console.log(req.body)
    const { carName, carNo, carPhoto, carRate, carDescription } = req.body;
+   console.log(carName, carNo, carPhoto, carRate, carDescription )
+   console.log(req.file)
     
    let photoUrl = (carPhoto || "").trim();
    const description = (carDescription || "").trim();

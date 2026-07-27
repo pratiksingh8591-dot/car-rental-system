@@ -5,6 +5,7 @@ const { check, validationResult } = require("express-validator");
 const storeAuthSession = (req, user) => {
   req.session.isLoggedIN = true;
   req.session.usertype = user.usertype;
+
   req.session.user = {
     _id: user._id.toString(),
     FirstName: user.FirstName,
@@ -43,7 +44,9 @@ const postlogin=async (req,res)=>{
     })  
     }
     console.log(req.session)
+    console.log(user.usertype)
     storeAuthSession(req, user);
+      
     req.session.save((err)=>{
       if(err){
         console.log("session save error:", err);
