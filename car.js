@@ -3,7 +3,7 @@ const dns = require("dns");
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const express=require('express');
-const multer=require('multer')
+const multer=require('multer')// used for handling multipart form
 const session=require('express-session')
 const Mongodbstore=require('connect-mongodb-session')(session);
 const app =express();
@@ -22,8 +22,27 @@ const viewsPath = path.resolve(__dirname, 'views');
 app.set('views', viewsPath);
 console.log('Views directory:', viewsPath);
 app.use(express.urlencoded({extended:false}));
+const randomString=(length)=>{
+    const word='abcdefghijklmnopqrstuvwxyz'
+    let result='';
+    for(let i=0;i<length;i++){
+          result+=word.charAt(Math.floor(Math.random()*word.length))
+    }
+    return  result;
+}
+const storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,path.join(__dirname,"uploads/"))
+    },
+    filename:(req,file,cb)=>{
+        cb(null,randomString(10) +'-'+ file.originalname)
+    }
+})
+const multerOptions={
+    storage// used for getting uploaded photos on my db
+}
 app.use(express.json());
-app.use(multer().single('carPhoto'))
+app.use(multer(multerOptions).single('carPhoto'))
 app.use(express.static(path.join(__dirname,'public')));
 
 const dbpath="mongodb+srv://pratiksingh8591_db_user:jGvJTLRHraQ5lP4I@car-rentaldb.pvvzlnm.mongodb.net/car-rental?appName=car-rentalDB"
