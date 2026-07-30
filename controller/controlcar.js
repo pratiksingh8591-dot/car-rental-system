@@ -1,6 +1,8 @@
 const Car = require("../models/cardata");
 const http = require("http");
 const https = require("https");
+const path=require('path')
+const rootdir=require("../utils/path-util")
 
 const Favourite = require("../models/favourites");
 
@@ -56,9 +58,15 @@ const postcar = async (req, res, next) => {
    console.log(carName, carNo, carPhoto, carRate, carDescription )
    console.log(req.file)
     
-   let photoUrl = (carPhoto || "").trim();
+   let photoUrl = ""
    const description = (carDescription || "").trim();
-
+    
+if (req.file) {
+    photoUrl = "/uploads/" + req.file.filename;
+}
+else{
+    photoUrl = (carPhoto || "").trim();
+}
    if (photoUrl && !isImageUrl(photoUrl)) {
       try {
          const html = await fetchHtml(photoUrl);
@@ -140,8 +148,11 @@ const postEditcar=(req,res)=>{
    car.carName=carName;
    car.carNo=carNo;
    car.carRate=carRate;
-   car.photoUrl=carPhoto;
+  
    car.description=carDescription;
+   if(req.file){
+      car.photoUrl= "/uploads/"+req.file.filename
+   }
    console.log(car);
    return car.save()
    }) .then((car) => {
@@ -340,6 +351,22 @@ const getcardetails= (req,res)=>{
       console.log(err);
     })
 }
+const getrules=[(req,res,next)=>{
+   console.log(req.params);
+    console.log(req.params.carId);
+
+   if(!req.session.isLoggedIN){
+     return res.redirect("/login")
+   }
+   next()
+},
+  (req,res,next)=>{
+   const carId=req.params.carId;
+   const rulesfilename='carRules.pdf'
+   const filepath=path.join(rootdir,'rules',rulesfilename)
+   res.download(filepath,'carRules.pdf')
+  }
+]
      const deleteCar=(req,res)=>{
          const id=req.params.CarID;
          console.log("Deleted id",id)
@@ -364,6 +391,7 @@ module.exports = {
    getRejectView,
    getfavourites,
    getcardetails,
+   getrules,
    deleteCar,
    getCarAdded,
    getEditCar,

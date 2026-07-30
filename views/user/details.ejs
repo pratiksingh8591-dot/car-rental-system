@@ -201,6 +201,13 @@
 						<span>Rate: <%= car.carRate %>/hr</span>
 					</div>
 					<div class="car-description"><%= car.description || 'No description provided yet.' %></div>
+					<div>
+						<a href="/car/rules/<%= car._id %>"class="car-card-placeholder">
+							<svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.4">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8l2 5H6l2-5zM3 12h18v5a1 1 0 01-1 1H4a1 1 0 01-1-1v-5zm4 5v1m10-1v1" />
+							</svg>
+							rules</a>
+					</div>
 					<div class="actions">
 						<form action="/book" method="POST">
 							<input type="hidden" name="carName" value="<%= car.name %>">

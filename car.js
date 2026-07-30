@@ -44,6 +44,7 @@ const multerOptions={
 app.use(express.json());
 app.use(multer(multerOptions).single('carPhoto'))
 app.use(express.static(path.join(__dirname,'public')));
+app.use("/uploads",express.static(path.join(__dirname,'uploads')))
 
 const dbpath="mongodb+srv://pratiksingh8591_db_user:jGvJTLRHraQ5lP4I@car-rentaldb.pvvzlnm.mongodb.net/car-rental?appName=car-rentalDB"
 const store= new Mongodbstore({

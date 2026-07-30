@@ -303,7 +303,7 @@
 
 				<div class="info">
 
-					<form action="/host/editcar/<%= car._id %>" method="POST" class="flex-row">
+					<form action="/host/editcar/<%= car._id %>"enctype="multipart/form-data" method="POST" class="flex-row">
 
 						<div class="form-header">
 							<span class="car-badge">Edit Car</span>
@@ -355,7 +355,8 @@
 								<input
 								 class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
 									id="photoUrl"
-									type="text"
+									 type="file" 
+									accept="image/*"
 									name="carPhoto"
 									value="<%= car.photoUrl %>">
 							</div>
