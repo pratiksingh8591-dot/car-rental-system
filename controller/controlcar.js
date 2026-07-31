@@ -361,13 +361,17 @@ const getrules=[(req,res,next)=>{
    next()
 },
   (req,res,next)=>{
-   const carId=req.params.carId;
+   const carId=req.params.id;
+   
    const rulesfilename='carRules.pdf'
    const filepath=path.join(rootdir,'rules',rulesfilename)
-   res.download(filepath,'carRules.pdf')
+   console.log(rootdir)
+   console.log(typeof rootdir)
+   res.setHeader("Content-Type", "application/pdf");
+   res.sendFile(filepath)
   }
 ]
-     const deleteCar=(req,res)=>{
+     const deleteCar=(req,res)=>{ 
          const id=req.params.CarID;
          console.log("Deleted id",id)
          Car.findByIdAndDelete(id).then(()=>{

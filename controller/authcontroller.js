@@ -2,6 +2,7 @@ const User=require("../models/userdata")
 const bcrypt = require("bcrypt");
 const { check, validationResult } = require("express-validator");
 
+
 const storeAuthSession = (req, user) => {
   req.session.isLoggedIN = true;
   req.session.usertype = user.usertype;
